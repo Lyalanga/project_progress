@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
@@ -10,7 +11,7 @@
         android:id="@+id/consultationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Veterinarian Consultation"
+        android:text="Msaada Kwa Mtaalamu Wa Mifugo"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
@@ -21,7 +22,7 @@
         android:id="@+id/symptomsInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter your symptoms"
+        android:hint="Ingiza Dalili"
         android:inputType="textMultiLine"
         android:lines="4"
         android:padding="8dp"/>
@@ -30,7 +31,7 @@
         android:id="@+id/additionalInfoInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Any additional information"
+        android:hint="Maelezo ya Ziada"
         android:inputType="textMultiLine"
         android:lines="4"
         android:padding="8dp"
@@ -41,7 +42,8 @@
         android:id="@+id/submitConsultationBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Submit Consultation Request"
-        android:layout_marginTop="16dp"/>
+        android:text="Tuma Ombi La msaada"
+        android:layout_marginTop="16dp"
+        app:cornerRadius="8dp"/>
 
 </LinearLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="24dp"
     android:layout_width="match_parent"
@@ -26,5 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Weka Kumbusho"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        app:cornerRadius="8dp"/>
 </LinearLayout>

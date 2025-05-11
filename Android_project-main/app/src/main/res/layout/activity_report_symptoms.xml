@@ -5,6 +5,15 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/chkDiarrhea2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:text="Kuhara ya manjano"
+        android:textColor="@color/text_color_primary"
+        app:buttonTint="@color/primary_color" />
+
     <TextView
         android:id="@+id/symptomsTitle"
         android:layout_width="match_parent"
@@ -105,7 +114,7 @@
         android:text="Chambua Dalili"
         android:textSize="16sp"
         android:textAllCaps="false"
-        app:cornerRadius="28dp"
+        app:cornerRadius="8dp"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/symptomsCard"
         app:layout_constraintStart_toStartOf="parent"
