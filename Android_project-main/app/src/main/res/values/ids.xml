@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="nameInputLayout" type="id" />
+    <item name="confirmPasswordInputLayout" type="id" />
+    <item name="confirmPasswordInput" type="id" />
+</resources>

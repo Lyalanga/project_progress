@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/background_color">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fowl Typhoid Information"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_color_primary"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:id="@+id/btnCauses"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Sababu"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:background="@color/primary_color"
+            android:gravity="center"
+            android:layout_marginEnd="4dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/btnSymptoms"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Dalili"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:background="@color/primary_color"
+            android:gravity="center"
+            android:layout_marginStart="4dp"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:id="@+id/btnTreatment"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Matibabu"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:background="@color/primary_color"
+            android:gravity="center"
+            android:layout_marginEnd="4dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/btnPrevention"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Kuzuia"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:background="@color/primary_color"
+            android:gravity="center"
+            android:layout_marginStart="4dp"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txtInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:textColor="@color/text_color_secondary"
+                android:text="Bonyeza kitufe hapo juu kupata taarifa zaidi kuhusu ugonjwa wa Fowl Typhoid."
+                android:lineSpacingExtra="6dp"/>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/wasiliana_na_daktari_wa_mifugo_kwa_ushauri_zaidi"
+        android:textStyle="italic"
+        android:textSize="14sp"
+        android:textColor="@color/text_color_secondary"
+        android:gravity="center"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>

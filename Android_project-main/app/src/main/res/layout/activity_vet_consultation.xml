@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/consultationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Veterinarian Consultation"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="16dp"/>
+
+    <!-- Consultation Details Input -->
+    <EditText
+        android:id="@+id/symptomsInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your symptoms"
+        android:inputType="textMultiLine"
+        android:lines="4"
+        android:padding="8dp"/>
+
+    <EditText
+        android:id="@+id/additionalInfoInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Any additional information"
+        android:inputType="textMultiLine"
+        android:lines="4"
+        android:padding="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/submitConsultationBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit Consultation Request"
+        android:layout_marginTop="16dp"/>
+
+</LinearLayout>
