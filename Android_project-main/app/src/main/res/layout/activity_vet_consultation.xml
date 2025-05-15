@@ -1,49 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    tools:context=".VetConsultationActivity">
 
-    <!-- Title -->
     <TextView
-        android:id="@+id/consultationTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Msaada Kwa Mtaalamu Wa Mifugo"
+        android:text="Mazungumzo ya Ushauri wa Mifugo"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:paddingBottom="16dp"/>
+        android:gravity="center"
+        android:layout_marginBottom="8dp" />
 
-    <!-- Consultation Details Input -->
-    <EditText
-        android:id="@+id/symptomsInput"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/currentRoleTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Ingiza Dalili"
-        android:inputType="textMultiLine"
-        android:lines="4"
-        android:padding="8dp"/>
+        android:text="Wajibu wa sasa: Mkulima"
+        android:textStyle="italic"
+        android:layout_marginBottom="4dp" />
 
-    <EditText
-        android:id="@+id/additionalInfoInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Maelezo ya Ziada"
-        android:inputType="textMultiLine"
-        android:lines="4"
-        android:padding="8dp"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Submit Button -->
     <Button
-        android:id="@+id/submitConsultationBtn"
+        android:id="@+id/switchRoleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Badilisha Wajibu"
+        android:layout_marginBottom="8dp" />
+
+    <ListView
+        android:id="@+id/chatListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="#CCCCCC"
+        android:dividerHeight="1dp"
+        android:background="#F5F5F5" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tuma Ombi La msaada"
-        android:layout_marginTop="16dp"
-        app:cornerRadius="8dp"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <EditText
+            android:id="@+id/messageEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Andika ujumbe wako..."
+            android:inputType="textMultiLine"
+            android:maxLines="3" />
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tuma"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
 
 </LinearLayout>
