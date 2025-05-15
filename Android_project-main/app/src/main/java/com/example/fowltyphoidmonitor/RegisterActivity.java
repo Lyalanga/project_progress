@@ -2,6 +2,7 @@ package com.example.fowltyphoidmonitor;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -125,12 +126,33 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void performRegistration() {
-        // For now, just show a success message and navigate to login activity
-        Toast.makeText(this, "Registration successful! Please login with your credentials", Toast.LENGTH_LONG).show();
+        // Get user information
+        String name = nameInput.getText().toString().trim();
+        String email = emailInput.getText().toString().trim();
+        String password = passwordInput.getText().toString().trim();
 
-        // Return to login screen
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        // Save user data to SharedPreferences (in a real app, you would use a secure storage method)
+        saveUserData(name, email, password);
+
+        // Show success message
+        Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
+
+        // Navigate to profile setup activity
+        Intent intent = new Intent(RegisterActivity.this, ProfileSetupActivity.class);
         startActivity(intent);
         finish(); // Close the register activity
+    }
+
+    private void saveUserData(String name, String email, String password) {
+        // In a real app, you would use a more secure method and possibly a database
+        SharedPreferences preferences = getSharedPreferences("FowlTyphoidMonitorPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putString("userName", name);
+        editor.putString("userEmail", email);
+        editor.putString("userPassword", password); // Note: In a real app, never store passwords in plain text
+        editor.putBoolean("isLoggedIn", true);
+
+        editor.apply();
     }
 }

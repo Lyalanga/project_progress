@@ -1,12 +1,11 @@
 package com.example.fowltyphoidmonitor;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,8 +18,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout emailInputLayout, passwordInputLayout;
     private TextInputEditText emailInput, passwordInput;
     private MaterialButton btnLogin;
-    private TextView forgotPassword, btnRegister;
-    private ImageView googleLogin, facebookLogin;
+    private MaterialButton btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +28,20 @@ public class LoginActivity extends AppCompatActivity {
         // Initialize views
         initializeViews();
         setupClickListeners();
+
+        // Check if user is already logged in
+        checkLoginStatus();
     }
 
     private void initializeViews() {
         emailInputLayout = findViewById(R.id.emailInputLayout);
         passwordInputLayout = findViewById(R.id.passwordInputLayout);
+
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
+
         btnLogin = findViewById(R.id.btnLogin);
-        forgotPassword = findViewById(R.id.forgotPassword);
         btnRegister = findViewById(R.id.btnRegister);
-        googleLogin = findViewById(R.id.googleLogin);
-        facebookLogin = findViewById(R.id.facebookLogin);
     }
 
     private void setupClickListeners() {
@@ -49,17 +49,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validateInputs()) {
-                    // Perform login operation
                     performLogin();
                 }
-            }
-        });
-
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle forgot password
-                Toast.makeText(LoginActivity.this, "Forgot password feature coming soon", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -67,25 +58,20 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to register activity
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
+    }
 
-        googleLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle Google login
-                Toast.makeText(LoginActivity.this, "Google login feature coming soon", Toast.LENGTH_SHORT).show();
-            }
-        });
+    private void checkLoginStatus() {
+        SharedPreferences preferences = getSharedPreferences("FowlTyphoidMonitorPrefs", MODE_PRIVATE);
+        boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
 
-        facebookLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle Facebook login
-                Toast.makeText(LoginActivity.this, "Facebook login feature coming soon", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (isLoggedIn) {
+            // Navigate directly to dashboard
+            navigateToDashboard();
+        }
     }
 
     private boolean validateInputs() {
@@ -94,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
 
+        // Validate email
         if (TextUtils.isEmpty(email)) {
             emailInputLayout.setError("Please enter your email");
             isValid = false;
@@ -104,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             emailInputLayout.setError(null);
         }
 
+        // Validate password
         if (TextUtils.isEmpty(password)) {
             passwordInputLayout.setError("Please enter your password");
             isValid = false;
@@ -119,9 +107,39 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void performLogin() {
-        // For now, just show a success message and navigate to main activity
-        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        finish(); // Close the login activity
+        String email = emailInput.getText().toString().trim();
+        String password = passwordInput.getText().toString().trim();
+
+        // Verify credentials against stored data
+        if (verifyCredentials(email, password)) {
+            // Login successful
+            Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
+
+            // Update login status
+            SharedPreferences preferences = getSharedPreferences("FowlTyphoidMonitorPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isLoggedIn", true);
+            editor.apply();
+
+            // Navigate to dashboard
+            navigateToDashboard();
+        } else {
+            // Login failed
+            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean verifyCredentials(String email, String password) {
+        SharedPreferences preferences = getSharedPreferences("FowlTyphoidMonitorPrefs", MODE_PRIVATE);
+        String storedEmail = preferences.getString("userEmail", "");
+        String storedPassword = preferences.getString("userPassword", "");
+
+        return email.equals(storedEmail) && password.equals(storedPassword);
+    }
+
+    private void navigateToDashboard() {
+        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+        startActivity(intent);
+        finish(); // Close login activity
     }
 }
