@@ -5,14 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/chkDiarrhea2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="8dp"
-        android:text="Kuhara ya manjano"
-        android:textColor="@color/text_color_primary"
-        app:buttonTint="@color/primary_color" />
+
 
     <TextView
         android:id="@+id/symptomsTitle"
