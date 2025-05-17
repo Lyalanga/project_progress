@@ -3,4 +3,7 @@
     <item name="nameInputLayout" type="id" />
     <item name="confirmPasswordInputLayout" type="id" />
     <item name="confirmPasswordInput" type="id" />
+    <item name="fullNameInputLayout" type="id" />
+    <item name="fullNameInput" type="id" />
+    <item name="btnBackToLogin" type="id" />
 </resources>

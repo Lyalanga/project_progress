@@ -1,6 +1,7 @@
 package com.example.fowltyphoidmonitor;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.util.Log;
@@ -13,9 +14,21 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton btnSymptoms, btnDiseaseInfo, btnReminders, btnConsultVet;
     private MaterialButton btnLogout, btnReport, btnRegister, btnLogin;
 
+    // Authentication constants
+    private static final String PREFS_NAME = "FowlTyphoidMonitorPrefs";
+    private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
+    private static final String KEY_PROFILE_COMPLETE = "isProfileComplete";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Check authentication before showing the main screen
+        if (!isUserLoggedIn()) {
+            redirectToLogin();
+            return; // Important: stop executing onCreate if redirecting
+        }
+
         setContentView(R.layout.activity_main);
 
         // Initialize buttons from the layout
@@ -23,6 +36,52 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up all click listeners
         setupClickListeners();
+
+        // Update UI based on login state
+        updateAuthenticationUI();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Check authentication when returning to this activity
+        if (!isUserLoggedIn()) {
+            redirectToLogin();
+            return;
+        }
+
+        // Update UI if needed
+        updateAuthenticationUI();
+    }
+
+    private boolean isUserLoggedIn() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return prefs.getBoolean(KEY_IS_LOGGED_IN, false);
+    }
+
+    private boolean isProfileComplete() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return prefs.getBoolean(KEY_PROFILE_COMPLETE, false);
+    }
+
+    private void redirectToLogin() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish(); // Close MainActivity so they can't go back without logging in
+    }
+
+    private void updateAuthenticationUI() {
+        // If user is logged in, hide login/register buttons
+        if (isUserLoggedIn()) {
+            btnLogin.setVisibility(View.GONE);
+            btnRegister.setVisibility(View.GONE);
+            btnLogout.setVisibility(View.VISIBLE);
+        } else {
+            // This should never execute as we redirect in onCreate/onResume
+            btnLogin.setVisibility(View.VISIBLE);
+            btnRegister.setVisibility(View.VISIBLE);
+            btnLogout.setVisibility(View.GONE);
+        }
     }
 
     private void initializeViews() {
@@ -77,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Set up navigation for login
+        // Set up navigation for login - in a completed login system, this would likely be removed
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,8 +144,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Set up navigation for registration
-        // Corrected: Don't finish MainActivity when going to Register
+        // Set up navigation for registration - in a completed login system, this would likely be removed
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,18 +156,25 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // For logout, we DO want to finish MainActivity
-                try {
-                    // Consider clearing any user session data here before logging out
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish(); // Correctly closes MainActivity for logout
-                } catch (Exception e) {
-                    Log.e("MainActivity", "Error during logout: " + e.getMessage());
-                }
+                logout();
             }
         });
+    }
+
+    private void logout() {
+        try {
+            // Clear login state
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            prefs.edit().putBoolean(KEY_IS_LOGGED_IN, false).apply();
+
+            // Redirect to login
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        } catch (Exception e) {
+            Log.e("MainActivity", "Error during logout: " + e.getMessage());
+        }
     }
 
     /**

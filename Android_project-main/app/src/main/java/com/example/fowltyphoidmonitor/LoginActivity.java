@@ -20,6 +20,13 @@ public class LoginActivity extends AppCompatActivity {
     private MaterialButton btnLogin;
     private MaterialButton btnRegister;
 
+    // Shared constants with MainActivity and RegisterActivity
+    private static final String PREFS_NAME = "FowlTyphoidMonitorPrefs";
+    private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
+    private static final String KEY_PROFILE_COMPLETE = "isProfileComplete";
+    private static final String KEY_USER_EMAIL = "userEmail";
+    private static final String KEY_USER_PASSWORD = "userPassword";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,12 +72,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkLoginStatus() {
-        SharedPreferences preferences = getSharedPreferences("FowlTyphoidMonitorPrefs", MODE_PRIVATE);
-        boolean isLoggedIn = preferences.getBoolean("isLoggedIn", false);
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isLoggedIn = preferences.getBoolean(KEY_IS_LOGGED_IN, false);
 
         if (isLoggedIn) {
-            // Navigate directly to dashboard
-            navigateToDashboard();
+            // Navigate based on profile completion
+            navigateToMainOrProfileSetup();
         }
     }
 
@@ -116,13 +123,13 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
 
             // Update login status
-            SharedPreferences preferences = getSharedPreferences("FowlTyphoidMonitorPrefs", MODE_PRIVATE);
+            SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("isLoggedIn", true);
+            editor.putBoolean(KEY_IS_LOGGED_IN, true);
             editor.apply();
 
-            // Navigate to dashboard
-            navigateToDashboard();
+            // Navigate to main activity or profile setup
+            navigateToMainOrProfileSetup();
         } else {
             // Login failed
             Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
@@ -130,16 +137,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean verifyCredentials(String email, String password) {
-        SharedPreferences preferences = getSharedPreferences("FowlTyphoidMonitorPrefs", MODE_PRIVATE);
-        String storedEmail = preferences.getString("userEmail", "");
-        String storedPassword = preferences.getString("userPassword", "");
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String storedEmail = preferences.getString(KEY_USER_EMAIL, "");
+        String storedPassword = preferences.getString(KEY_USER_PASSWORD, "");
 
         return email.equals(storedEmail) && password.equals(storedPassword);
     }
 
-    private void navigateToDashboard() {
-        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-        startActivity(intent);
-        finish(); // Close login activity
+    private void navigateToMainOrProfileSetup() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isProfileComplete = prefs.getBoolean(KEY_PROFILE_COMPLETE, false);
+
+        if (!isProfileComplete) {
+            // Send to profile setup first
+            Intent intent = new Intent(LoginActivity.this, ProfileSetupActivity.class);
+            startActivity(intent);
+        } else {
+            // Go directly to main activity with flags to clear the stack
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+
+        finish(); // Close login screen
     }
 }

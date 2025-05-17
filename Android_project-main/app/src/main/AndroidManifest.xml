@@ -28,6 +28,9 @@
         <activity android:name=".ReportSymptomsActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity
+            android:name=".ProfileSetupActivity"
+            android:exported="false" />
 
 
     </application>

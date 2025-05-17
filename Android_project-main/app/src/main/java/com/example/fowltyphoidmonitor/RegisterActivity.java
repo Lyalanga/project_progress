@@ -1,12 +1,10 @@
 package com.example.fowltyphoidmonitor;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +21,14 @@ public class RegisterActivity extends AppCompatActivity {
     private MaterialButton btnRegister;
     private TextView btnLogin;
 
+    // Shared constants with MainActivity and LoginActivity
+    private static final String PREFS_NAME = "FowlTyphoidMonitorPrefs";
+    private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
+    private static final String KEY_PROFILE_COMPLETE = "isProfileComplete";
+    private static final String KEY_USER_EMAIL = "userEmail";
+    private static final String KEY_USER_PASSWORD = "userPassword";
+    private static final String KEY_USER_FULLNAME = "userFullName";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +39,6 @@ public class RegisterActivity extends AppCompatActivity {
         setupClickListeners();
     }
 
-    @SuppressLint("WrongViewCast")
     private void initializeViews() {
         nameInputLayout = findViewById(R.id.nameInputLayout);
         emailInputLayout = findViewById(R.id.emailInputLayout);
@@ -54,8 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validateInputs()) {
-                    // Perform registration
-                    performRegistration();
+                    registerUser();
                 }
             }
         });
@@ -64,7 +68,9 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate back to login activity
-                onBackPressed();
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish(); // Close register activity
             }
         });
     }
@@ -72,14 +78,14 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean validateInputs() {
         boolean isValid = true;
 
-        String name = nameInput.getText().toString().trim();
+        String fullName = nameInput.getText().toString().trim();
         String email = emailInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
         String confirmPassword = confirmPasswordInput.getText().toString().trim();
 
-        // Validate name
-        if (TextUtils.isEmpty(name)) {
-            nameInputLayout.setError("Please enter your name");
+        // Validate full name
+        if (TextUtils.isEmpty(fullName)) {
+            nameInputLayout.setError("Please enter your full name");
             isValid = false;
         } else {
             nameInputLayout.setError(null);
@@ -125,34 +131,26 @@ public class RegisterActivity extends AppCompatActivity {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private void performRegistration() {
-        // Get user information
-        String name = nameInput.getText().toString().trim();
+    private void registerUser() {
+        String fullName = nameInput.getText().toString().trim();
         String email = emailInput.getText().toString().trim();
         String password = passwordInput.getText().toString().trim();
 
-        // Save user data to SharedPreferences (in a real app, you would use a secure storage method)
-        saveUserData(name, email, password);
+        // Save user information to SharedPreferences
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(KEY_USER_FULLNAME, fullName);
+        editor.putString(KEY_USER_EMAIL, email);
+        editor.putString(KEY_USER_PASSWORD, password);
+        editor.putBoolean(KEY_IS_LOGGED_IN, true);  // Auto-login after registration
+        editor.putBoolean(KEY_PROFILE_COMPLETE, false);  // User needs to complete profile
+        editor.apply();
 
-        // Show success message
         Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
 
-        // Navigate to profile setup activity
+        // Navigate to profile setup
         Intent intent = new Intent(RegisterActivity.this, ProfileSetupActivity.class);
         startActivity(intent);
-        finish(); // Close the register activity
-    }
-
-    private void saveUserData(String name, String email, String password) {
-        // In a real app, you would use a more secure method and possibly a database
-        SharedPreferences preferences = getSharedPreferences("FowlTyphoidMonitorPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-
-        editor.putString("userName", name);
-        editor.putString("userEmail", email);
-        editor.putString("userPassword", password); // Note: In a real app, never store passwords in plain text
-        editor.putBoolean("isLoggedIn", true);
-
-        editor.apply();
+        finish(); // Close register activity
     }
 }
