@@ -28,6 +28,11 @@
         <activity android:name=".ReportSymptomsActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".ProfileEditActivity" />
+        <activity android:name=".PrivacySettingsActivity" />
+        <activity android:name=".HistoryActivity" />
         <activity
             android:name=".ProfileSetupActivity"
             android:exported="false" />

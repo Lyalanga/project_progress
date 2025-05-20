@@ -11,7 +11,7 @@
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Complete Your Profile"
+        android:text="Malizia Usajili"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Farm Name">
+                android:hint="Jina La Mkulima">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/farmNameInput"
@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Location">
+                android:hint="Unapoishi">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/locationInput"
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="Number of Flocks">
+                android:hint="Idadi Ya Kuku">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/flocksInput"
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Additional Information"
+                android:text="Maelezo Ya Ziada"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Poultry has medical history"
+                android:text="Kuku Wametibiwa"
                 android:textSize="16sp" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
@@ -99,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Poultry has been vaccinated"
+                android:text="Kuku amechanjwa"
                 android:textSize="16sp" />
 
             <com.google.android.material.button.MaterialButton
@@ -109,7 +109,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="16dp"
                 android:padding="12dp"
-                android:text="Save Profile" />
+                android:text="Hifadhi" />
 
         </LinearLayout>
     </ScrollView>

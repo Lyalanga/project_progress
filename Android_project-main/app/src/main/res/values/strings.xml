@@ -31,4 +31,21 @@
     <string name="majibu_yataonekana_hapa">Majibu yataonekana hapa</string>
     <string name="vikumbusho_vya_chanjo_na_matibabu">Vikumbusho vya Chanjo na Matibabu</string>
     <string name="ongeza_kikumbusho">Ongeza Kikumbusho</string>
+
+    <!-- Privacy Settings strings -->
+    <string name="privacy_settings">Privacy Settings</string>
+    <string name="back">Back</string>
+    <string name="save_settings">Save Settings</string>
+
+    <!-- Data Collection -->
+    <string name="data_collection">Data Collection</string>
+    <string name="data_collection_description">Allow the app to collect anonymous data to improve fowl typhoid monitoring</string>
+
+    <!-- Location Sharing -->
+    <string name="location_sharing">Location Sharing</string>
+    <string name="location_sharing_description">Share farm location for regional outbreak monitoring and alerts</string>
+
+    <!-- Notifications -->
+    <string name="notifications">Notifications</string>
+    <string name="notifications_description">Receive alerts about potential fowl typhoid outbreaks in your area</string>
 </resources>
