@@ -19,13 +19,13 @@ public class SymptomTrackerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_symptom_tracker);
 
-        chkFever = findViewById(R.id.chkFever);
-        chkDiarrhea = findViewById(R.id.chkDiarrhea);
-        chkLowEgg = findViewById(R.id.chkLowEgg);
-        chkLossAppetite = findViewById(R.id.chkLossAppetite);
+        chkFever = findViewById(R.id.fever);
+        chkDiarrhea = findViewById(R.id.diarrhea);
+        chkLowEgg = findViewById(R.id.decreasedEggProduction);
+        chkLossAppetite = findViewById(R.id.lossAppetite);
         chkWeakness = findViewById(R.id.chkWeakness);
-        btnSubmit = findViewById(R.id.btnSubmit);
-        txtResult = findViewById(R.id.txtResult);
+        btnSubmit = findViewById(R.id.submitSymptoms);
+        txtResult = findViewById(R.id.resultCard);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override

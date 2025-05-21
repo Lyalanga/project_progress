@@ -1,171 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
-    android:fillViewport="true">
+    android:padding="16dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/symptomsTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:text="Chagua Dalili"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_color_primary"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:id="@+id/titleTextView"
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/symptomsTitle"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chagua Dalili Zilizopo:"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/text_color_primary"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:orientation="vertical">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/symptomsCardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/symptomsCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/primary_color_light">
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/chkFever"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Homa kali"
-                    android:textColor="@color/text_color_primary"
-                    android:paddingVertical="8dp"
-                    app:buttonTint="@color/primary_color" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#E0E0E0" />
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/fever"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Homa Kali"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:buttonTint="@color/primary_color" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/chkDiarrhea"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Kuhara ya manjano"
-                    android:textColor="@color/text_color_primary"
-                    android:paddingVertical="8dp"
-                    app:buttonTint="@color/primary_color" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#E0E0E0" />
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/diarrhea"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Kuhara ya Manjano"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:buttonTint="@color/primary_color" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/chkLowEgg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Kupungua kwa uzalishaji wa mayai"
-                    android:textColor="@color/text_color_primary"
-                    android:paddingVertical="8dp"
-                    app:buttonTint="@color/primary_color" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#E0E0E0" />
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/chkWeakness"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Kuhara ya Manjano"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:buttonTint="@color/primary_color" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/chkLossAppetite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Kupoteza hamu ya kula"
-                    android:textColor="@color/text_color_primary"
-                    android:paddingVertical="8dp"
-                    app:buttonTint="@color/primary_color" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#E0E0E0" />
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/lossAppetite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Kukosa Hamu ya Kula"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:buttonTint="@color/primary_color" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/chkWeakness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Udhaifu na kushindwa kutembea"
-                    android:textColor="@color/text_color_primary"
-                    android:paddingVertical="8dp"
-                    app:buttonTint="@color/primary_color" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider_color"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tathmini Dalili"
-            android:layout_marginTop="24dp"
-            android:padding="12dp"
-            android:textAllCaps="false"
-            app:icon="@drawable/ic_report"
-            app:iconGravity="textStart"
-            app:cornerRadius="8dp"
-            app:layout_constraintTop_toBottomOf="@id/symptomsCardView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/decreasedEggProduction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Kupungua kwa Mayai"
+                        android:textSize="16sp"
+                        android:paddingStart="8dp"
+                        android:buttonTint="@color/primary_color" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/resultCardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            android:visibility="visible"
-            app:layout_constraintTop_toBottomOf="@id/btnSubmit"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submitSymptoms"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Chambua Dalili"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                app:cornerRadius="8dp"
+                android:layout_marginTop="16dp" />
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/resultCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/primary_color">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Matokeo ya Tathmini"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_color_primary"
-                    android:layout_marginBottom="8dp" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/txtResult"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="14sp"
-                    android:textColor="@color/text_color_secondary" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/resultTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Uwezekano wa Ugonjwa"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_color_primary"
+                        android:drawableStart="@drawable/ic_info"
+                        android:drawablePadding="8dp"
+                        android:layout_marginBottom="8dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+                    <TextView
+                        android:id="@+id/suggestionOutput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Majibu yataonekana hapa"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_color_secondary"
+                        android:lineSpacingExtra="4dp" />
 
-    <!-- Color resources to add to colors.xml -->
-    <!--
-    <resources>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnContactVet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Wasiliana na Daktari"
+                        android:textAllCaps="false"
+                        app:icon="@drawable/ic_veterenian"
+                        app:iconGravity="textStart"
+                        android:padding="12dp"
+                        android:layout_marginTop="16dp"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
 
-    </resources>
-    -->
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        app:itemTextColor="@color/text_color_secondary"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
