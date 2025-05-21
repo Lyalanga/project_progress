@@ -3,162 +3,165 @@ package com.example.fowltyphoidmonitor;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
-
 public class LoginActivity extends AppCompatActivity {
 
-    private TextInputLayout emailInputLayout, passwordInputLayout;
-    private TextInputEditText emailInput, passwordInput;
-    private MaterialButton btnLogin;
-    private MaterialButton btnRegister;
-
-    // Shared constants with MainActivity and RegisterActivity
+    private static final String TAG = "LoginActivity";
     private static final String PREFS_NAME = "FowlTyphoidMonitorPrefs";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
+    private static final String KEY_USERNAME = "username";
+    private static final String KEY_PASSWORD = "password";
     private static final String KEY_PROFILE_COMPLETE = "isProfileComplete";
-    private static final String KEY_USER_EMAIL = "userEmail";
-    private static final String KEY_USER_PASSWORD = "userPassword";
+
+    private EditText etUsername;
+    private EditText etPassword;
+    private Button btnLogin;
+    private Button btnRegister;
+    private TextView tvForgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Check if user is already logged in
+        if (isUserLoggedIn()) {
+            Log.d(TAG, "User already logged in, redirecting to main screen");
+            redirectToMain();
+            return; // Stop executing onCreate if redirecting
+        }
+
         setContentView(R.layout.activity_login);
 
         // Initialize views
-        initializeViews();
-        setupClickListeners();
+        initViews();
 
-        // Check if user is already logged in
-        checkLoginStatus();
+        // Set up click listeners
+        setupClickListeners();
     }
 
-    private void initializeViews() {
-        emailInputLayout = findViewById(R.id.emailInputLayout);
-        passwordInputLayout = findViewById(R.id.passwordInputLayout);
-
-        emailInput = findViewById(R.id.emailInput);
-        passwordInput = findViewById(R.id.passwordInput);
-
+    private void initViews() {
+        etUsername = findViewById(R.id.etUsername);
+        etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
     }
 
     private void setupClickListeners() {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateInputs()) {
-                    performLogin();
-                }
+                attemptLogin();
             }
         });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to register activity
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                // Navigate to registration activity
+                try {
+                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error navigating to RegisterActivity: " + e.getMessage());
+                    Toast.makeText(LoginActivity.this, "Registration feature coming soon", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to forgot password activity
+                try {
+                    Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error navigating to ForgotPasswordActivity: " + e.getMessage());
+                    Toast.makeText(LoginActivity.this, "Password recovery feature coming soon", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-    private void checkLoginStatus() {
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isLoggedIn = preferences.getBoolean(KEY_IS_LOGGED_IN, false);
+    private void attemptLogin() {
+        String username = etUsername.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
 
-        if (isLoggedIn) {
-            // Navigate based on profile completion
-            navigateToMainOrProfileSetup();
+        // Validate inputs
+        if (username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
+            return;
         }
-    }
 
-    private boolean validateInputs() {
-        boolean isValid = true;
+        // For demo purposes, we'll use a simple authentication
+        // In a real app, you should validate against a secure database or API
+        if (validateCredentials(username, password)) {
+            // Save login state
+            saveLoginState(username, password);
 
-        String email = emailInput.getText().toString().trim();
-        String password = passwordInput.getText().toString().trim();
-
-        // Validate email
-        if (TextUtils.isEmpty(email)) {
-            emailInputLayout.setError("Please enter your email");
-            isValid = false;
-        } else if (!isValidEmail(email)) {
-            emailInputLayout.setError("Please enter a valid email");
-            isValid = false;
+            // Redirect to main activity
+            redirectToMain();
         } else {
-            emailInputLayout.setError(null);
-        }
-
-        // Validate password
-        if (TextUtils.isEmpty(password)) {
-            passwordInputLayout.setError("Please enter your password");
-            isValid = false;
-        } else {
-            passwordInputLayout.setError(null);
-        }
-
-        return isValid;
-    }
-
-    private boolean isValidEmail(String email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
-    private void performLogin() {
-        String email = emailInput.getText().toString().trim();
-        String password = passwordInput.getText().toString().trim();
-
-        // Verify credentials against stored data
-        if (verifyCredentials(email, password)) {
-            // Login successful
-            Toast.makeText(this, "Login successful!", Toast.LENGTH_SHORT).show();
-
-            // Update login status
-            SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(KEY_IS_LOGGED_IN, true);
-            editor.apply();
-
-            // Navigate to main activity or profile setup
-            navigateToMainOrProfileSetup();
-        } else {
-            // Login failed
-            Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private boolean verifyCredentials(String email, String password) {
-        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String storedEmail = preferences.getString(KEY_USER_EMAIL, "");
-        String storedPassword = preferences.getString(KEY_USER_PASSWORD, "");
+    private boolean validateCredentials(String username, String password) {
+        // In a real app, you would check against saved credentials or a server
+        // For demo, we'll check against saved credentials or accept any credentials if none are saved
 
-        return email.equals(storedEmail) && password.equals(storedPassword);
-    }
-
-    private void navigateToMainOrProfileSetup() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        boolean isProfileComplete = prefs.getBoolean(KEY_PROFILE_COMPLETE, false);
+        String savedUsername = prefs.getString(KEY_USERNAME, "");
+        String savedPassword = prefs.getString(KEY_PASSWORD, "");
 
-        if (!isProfileComplete) {
-            // Send to profile setup first
-            Intent intent = new Intent(LoginActivity.this, ProfileSetupActivity.class);
-            startActivity(intent);
-        } else {
-            // Go directly to main activity with flags to clear the stack
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+        // If we have saved credentials, check against them
+        if (!savedUsername.isEmpty() && !savedPassword.isEmpty()) {
+            return username.equals(savedUsername) && password.equals(savedPassword);
         }
 
-        finish(); // Close login screen
+        // For demo purposes, if no credentials are saved, accept any
+        // REMOVE THIS IN PRODUCTION - here just to make testing easier
+        return true;
+    }
+
+    private void saveLoginState(String username, String password) {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        // Save username and password (in a real app, NEVER store passwords in plain text)
+        editor.putString(KEY_USERNAME, username);
+        editor.putString(KEY_PASSWORD, password);
+        editor.putBoolean(KEY_IS_LOGGED_IN, true);
+
+        // If this is first login, mark profile as incomplete
+        if (!prefs.contains(KEY_PROFILE_COMPLETE)) {
+            editor.putBoolean(KEY_PROFILE_COMPLETE, false);
+        }
+
+        editor.apply();
+
+        Log.d(TAG, "User logged in successfully: " + username);
+    }
+
+    private boolean isUserLoggedIn() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        boolean isLoggedIn = prefs.getBoolean(KEY_IS_LOGGED_IN, false);
+        Log.d(TAG, "isUserLoggedIn check: " + isLoggedIn);
+        return isLoggedIn;
+    }
+
+    private void redirectToMain() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Close LoginActivity so they can't go back with the back button
     }
 }

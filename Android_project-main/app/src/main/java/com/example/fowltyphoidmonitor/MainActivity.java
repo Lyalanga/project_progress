@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "FowlTyphoidMonitorPrefs";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_PROFILE_COMPLETE = "isProfileComplete";
+    private static final String KEY_USERNAME = "username";
     private static final String TAG = "MainActivity";
 
     @Override
@@ -47,10 +48,20 @@ public class MainActivity extends AppCompatActivity {
         // Set up bottom navigation
         setupBottomNavigation();
 
-        // Set user data - in a real app, you would fetch this from a database or shared preferences
-        setUserData("John Lyalanga", "Arusha", 50);
+        // Load user data from SharedPreferences
+        loadUserData();
 
         Log.d(TAG, "MainActivity created successfully");
+
+        // Check if profile is complete, if not redirect to profile creation
+        if (!isProfileComplete()) {
+            try {
+                Log.d(TAG, "Profile incomplete, redirecting to profile setup");
+                navigateToActivity(ProfileEditActivity.class, "ProfileEdit");
+            } catch (Exception e) {
+                Log.e(TAG, "ProfileEditActivity may not exist yet: " + e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -81,6 +92,15 @@ public class MainActivity extends AppCompatActivity {
         finish(); // Close MainActivity so they can't go back without logging in
     }
 
+    private void loadUserData() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String username = prefs.getString(KEY_USERNAME, "User");
+        String location = prefs.getString("location", "Unknown");
+        int chickenCount = prefs.getInt("chickenCount", 0);
+
+        setUserData(username, location, chickenCount);
+    }
+
     private void setUserData(String username, String location, int chickenCount) {
         txtUsername.setText(username);
         txtLocation.setText("Eneo: " + location);
@@ -105,46 +125,17 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottomNavigation);
         ImageButton btnBack = findViewById(R.id.btnBack);
 
-        // Language, History, and Privacy buttons aren't in the current layout
-        // If you want to add them in the future, you'd need to update the XML layout
-        ImageButton btnLanguage = null;
-        ImageButton btnHistory = null;
-        ImageButton btnPrivacy = null;
-
         // Set up all click listeners right here instead of in a separate method
         setupButtonListeners(btnEditProfile, btnSymptoms, btnDiseaseInfo, btnReminders,
-                btnConsultVet, btnReport, btnLogout, btnBack, btnLanguage,
-                btnHistory, btnPrivacy);
+                btnConsultVet, btnReport, btnLogout, btnBack);
     }
 
     private void setupButtonListeners(MaterialButton btnEditProfile, MaterialButton btnSymptoms,
                                       MaterialButton btnDiseaseInfo, MaterialButton btnReminders,
                                       MaterialButton btnConsultVet, MaterialButton btnReport,
-                                      MaterialButton btnLogout, ImageButton btnBack,
-                                      ImageButton btnLanguage, ImageButton btnHistory,
-                                      ImageButton btnPrivacy) {
+                                      MaterialButton btnLogout, ImageButton btnBack) {
         // Back button click listener
         btnBack.setOnClickListener(v -> onBackPressed());
-
-        // Icon buttons click listeners - only if they exist
-        if (btnLanguage != null) {
-            btnLanguage.setOnClickListener(v -> {
-                navigateToActivity(LanguageSettingsActivity.class, "LanguageSettings");
-            });
-        }
-
-        // Only set these click listeners if the buttons exist and are initialized
-        if (btnHistory != null) {
-            btnHistory.setOnClickListener(v -> {
-                navigateToActivity(HistoryActivity.class, "History");
-            });
-        }
-
-        if (btnPrivacy != null) {
-            btnPrivacy.setOnClickListener(v -> {
-                navigateToActivity(PrivacySettingsActivity.class, "PrivacySettings");
-            });
-        }
 
         // Profile section
         btnEditProfile.setOnClickListener(v -> {
