@@ -67,13 +67,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to registration activity
-                try {
-                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    Log.e(TAG, "Error navigating to RegisterActivity: " + e.getMessage());
-                    Toast.makeText(LoginActivity.this, "Registration feature coming soon", Toast.LENGTH_SHORT).show();
-                }
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                finish(); // Close LoginActivity to prevent going back
             }
         });
 
@@ -161,6 +157,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void redirectToMain() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish(); // Close LoginActivity so they can't go back with the back button
     }

@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void redirectToLogin() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish(); // Close MainActivity so they can't go back without logging in
     }
