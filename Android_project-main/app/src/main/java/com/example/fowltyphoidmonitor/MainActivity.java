@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,8 +24,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "FowlTyphoidMonitorPrefs";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
     private static final String KEY_PROFILE_COMPLETE = "isProfileComplete";
-    private static final String KEY_USERNAME = "username";
     private static final String TAG = "MainActivity";
+
+    // Request code for profile editing
+    private static final int REQUEST_CODE_EDIT_PROFILE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         if (!isProfileComplete()) {
             try {
                 Log.d(TAG, "Profile incomplete, redirecting to profile setup");
-                navigateToActivity(ProfileEditActivity.class, "ProfileEdit");
+                navigateToActivityForResult(ProfileEditActivity.class, "ProfileEdit", REQUEST_CODE_EDIT_PROFILE);
             } catch (Exception e) {
                 Log.e(TAG, "ProfileEditActivity may not exist yet: " + e.getMessage());
             }
@@ -71,6 +74,26 @@ public class MainActivity extends AppCompatActivity {
         if (!isUserLoggedIn()) {
             Log.d(TAG, "User not logged in (onResume), redirecting to login screen");
             redirectToLogin();
+            return;
+        }
+
+        // IMPORTANT: Reload user data when returning from other activities
+        // This ensures profile updates are reflected immediately
+        loadUserData();
+        Log.d(TAG, "User data reloaded in onResume");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_EDIT_PROFILE && resultCode == RESULT_OK) {
+            // Profile was updated, reload the data
+            if (data != null && data.getBooleanExtra(ProfileEditActivity.EXTRA_PROFILE_UPDATED, false)) {
+                Log.d(TAG, "Profile updated, reloading data");
+                loadUserData();
+                Toast.makeText(this, "Wasifu umesasishwa", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -95,17 +118,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadUserData() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        String username = prefs.getString(KEY_USERNAME, "User");
-        String location = prefs.getString("location", "Unknown");
-        int chickenCount = prefs.getInt("chickenCount", 0);
 
-        setUserData(username, location, chickenCount);
+        // FIXED: Use consistent keys with ProfileActivity and ProfileEditActivity
+        String username = prefs.getString("username", "User");
+        String location = prefs.getString("location", "Unknown");
+        int farmSize = prefs.getInt("farmSize", 0); // Changed from "chickenCount" to "farmSize"
+
+        setUserData(username, location, farmSize);
+
+        Log.d(TAG, "Loaded user data - Username: " + username +
+                ", Location: " + location + ", Farm Size: " + farmSize);
     }
 
-    private void setUserData(String username, String location, int chickenCount) {
+    private void setUserData(String username, String location, int farmSize) {
         txtUsername.setText(username);
         txtLocation.setText("Eneo: " + location);
-        txtFarmSize.setText("Idadi ya kuku: " + chickenCount);
+        txtFarmSize.setText("Idadi ya kuku: " + farmSize); // farmSize instead of chickenCount
     }
 
     private void initializeViews() {
@@ -138,11 +166,11 @@ public class MainActivity extends AppCompatActivity {
         // Back button click listener
         btnBack.setOnClickListener(v -> onBackPressed());
 
-        // Profile section
+        // Profile section - ENHANCED: Use startActivityForResult for better communication
         btnEditProfile.setOnClickListener(v -> {
             try {
-                // Navigate to profile editing screen
-                navigateToActivity(ProfileEditActivity.class, "ProfileEdit");
+                Intent editIntent = new Intent(MainActivity.this, ProfileEditActivity.class);
+                startActivityForResult(editIntent, REQUEST_CODE_EDIT_PROFILE);
             } catch (Exception e) {
                 Log.e(TAG, "ProfileEditActivity may not exist yet: " + e.getMessage());
             }
@@ -243,6 +271,21 @@ public class MainActivity extends AppCompatActivity {
     private void navigateToActivity(Class<?> targetActivity, String activityName) {
         try {
             startActivity(new Intent(MainActivity.this, targetActivity));
+        } catch (Exception e) {
+            Log.e(TAG, "Error navigating to " + activityName + ": " + e.getMessage());
+        }
+    }
+
+    /**
+     * Helper method to navigate to different activities with result
+     * @param targetActivity The class of the activity to navigate to
+     * @param activityName Name for logging purposes
+     * @param requestCode Request code for the activity result
+     */
+    private void navigateToActivityForResult(Class<?> targetActivity, String activityName, int requestCode) {
+        try {
+            Intent intent = new Intent(MainActivity.this, targetActivity);
+            startActivityForResult(intent, requestCode);
         } catch (Exception e) {
             Log.e(TAG, "Error navigating to " + activityName + ": " + e.getMessage());
         }
