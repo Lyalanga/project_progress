@@ -4,36 +4,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color">
+    android:background="#F8F9FA">
 
-    <!-- Toolbar with back button -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <!-- Modern Header with gradient background -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/primary_color"
-        android:elevation="4dp"
+        android:layout_height="120dp"
+        android:background="@drawable/gradient_header_bg"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Afya Ya Kuku"
-        app:titleTextColor="@android:color/white">
+        android:elevation="8dp">
 
         <ImageButton
             android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="12dp"
+            android:src="@drawable/ic_back"
+            app:tint="@android:color/white"
+            android:contentDescription="Rudi nyuma"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="8dp"
-            android:src="@drawable/ic_back"
-            android:contentDescription="Rudi nyuma" />
+            android:text="Mlinzi wa Kuku"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp" />
 
-    </androidx.appcompat.widget.Toolbar>
+        <!-- Notification bell with ID added -->
+        <ImageView
+            android:id="@+id/notificationBell"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_notifications"
+            app:tint="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="24dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toTopOf="@id/bottomNavigation">
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
+        android:layout_marginTop="-40dp"
+        android:clipToPadding="false"
+        android:paddingTop="40dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,46 +70,51 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Profile Section -->
+            <!-- Dashboard Summary Card -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                android:backgroundTint="@android:color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Wasifu wako"
+                        android:text="Muhtasari wa Shamba"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_color_primary"
-                        android:layout_marginBottom="12dp" />
+                        android:textColor="#1F2937"
+                        android:layout_marginBottom="16dp" />
 
+                    <!-- Profile info in horizontal layout -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="12dp">
+                        android:layout_marginBottom="16dp">
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/profileImage"
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:src="@drawable/default_profile"
-                            android:layout_marginEnd="16dp" />
+                            android:layout_marginEnd="16dp"
+                            app:civ_border_width="2dp"
+                            app:civ_border_color="#E5E7EB" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="vertical">
 
                             <TextView
@@ -90,14 +124,14 @@
                                 android:text="Jina la Mtumiaji"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
-                                android:textColor="@color/text_color_primary" />
+                                android:textColor="#1F2937" />
 
                             <TextView
                                 android:id="@+id/txtLocation"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="Eneo: Arusha"
-                                android:textColor="@color/text_color_secondary"
+                                android:textColor="#6B7280"
                                 android:textSize="14sp" />
 
                             <TextView
@@ -106,38 +140,135 @@
                                 android:layout_height="wrap_content"
                                 android:text="Idadi ya kuku: 50"
                                 android:textSize="14sp"
-                                android:textColor="@color/text_color_secondary" />
+                                android:textColor="#6B7280" />
                         </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnEditProfile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:text="Hariri"
+                            android:textAllCaps="false"
+                            android:textSize="12sp"
+                            app:icon="@drawable/ic_edit"
+                            app:iconSize="16dp"
+                            app:iconGravity="textStart"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            app:strokeColor="#3B82F6"
+                            android:textColor="#3B82F6" />
                     </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnEditProfile"
+                    <!-- Stats Grid -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Hariri Wasifu"
-                        android:textAllCaps="false"
-                        app:icon="@drawable/ic_edit"
-                        app:iconGravity="textStart"
-                        android:padding="12dp"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:background="@drawable/stat_bg_green">
+
+                            <TextView
+                                android:id="@+id/txtTotalChickens"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="450"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/white" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Ndege Jumla"
+                                android:textSize="10sp"
+                                android:textColor="@android:color/white"
+                                android:alpha="0.9" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:background="@drawable/stat_bg_blue"
+                            android:layout_marginHorizontal="4dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/white" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Makundi Hai"
+                                android:textSize="10sp"
+                                android:textColor="@android:color/white"
+                                android:alpha="0.9" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            android:background="@drawable/stat_bg_orange">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1"
+                                android:textSize="20sp"
+                                android:textStyle="bold"
+                                android:textColor="@android:color/white" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tahadhari"
+                                android:textSize="10sp"
+                                android:textColor="@android:color/white"
+                                android:alpha="0.9" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Recent Alerts Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Usimamizi wa Afya ya Kuku"
-                android:textSize="24sp"
+                android:text="Tahadhari za Hivi Karibuni"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_color_primary"
-                android:layout_marginBottom="16dp" />
+                android:textColor="#1F2937"
+                android:layout_marginBottom="12dp"
+                android:drawableStart="@drawable/ic_notifications"
+                android:drawablePadding="8dp"
+                android:drawableTint="#F59E0B" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/alertsCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="@android:color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -145,113 +276,283 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <TextView
+                    <!-- Dynamic alerts container - this is what MainActivity.java is looking for -->
+                    <LinearLayout
+                        android:id="@+id/alertsContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Ufuatiliaji wa Afya"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_color_primary"
-                        android:layout_marginBottom="8dp" />
+                        android:orientation="vertical">
+
+                        <!-- Static alert items can stay here as examples, but dynamic ones will be added by Java code -->
+
+                        <!-- Alert Item 1 - Critical -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            android:background="@drawable/alert_bg_critical"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_warning"
+                                app:tint="#DC2626"
+                                android:layout_marginEnd="12dp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Chanjo inahitajika kwa Kundi A baada ya siku 2"
+                                android:textSize="14sp"
+                                android:textColor="#1F2937"
+                                android:textStyle="normal" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_close"
+                                app:tint="#6B7280"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:padding="2dp" />
+                        </LinearLayout>
+
+                        <!-- Alert Item 2 - Info -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            android:background="@drawable/alert_bg_info"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_info"
+                                app:tint="#2563EB"
+                                android:layout_marginEnd="12dp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Ukumbusho wa matibabu kwa Kundi B"
+                                android:textSize="14sp"
+                                android:textColor="#1F2937"
+                                android:textStyle="normal" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_close"
+                                app:tint="#6B7280"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:padding="2dp" />
+                        </LinearLayout>
+
+                        <!-- Alert Item 3 - Info -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            android:background="@drawable/alert_bg_info"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/ic_info"
+                                app:tint="#2563EB"
+                                android:layout_marginEnd="12dp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Dkt. Smith amejibu swali lako"
+                                android:textSize="14sp"
+                                android:textColor="#1F2937"
+                                android:textStyle="normal" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_close"
+                                app:tint="#6B7280"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:padding="2dp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Health Tracking Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hali ya Makundi"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#1F2937"
+                android:layout_marginBottom="12dp"
+                android:drawableStart="@drawable/ic_activity"
+                android:drawablePadding="8dp"
+                android:drawableTint="#3B82F6" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSymptoms"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:text="Fuatilia Dalili"
                         android:textAllCaps="false"
+                        android:textSize="16sp"
                         app:icon="@drawable/ic_track"
+                        app:iconSize="20dp"
                         app:iconGravity="textStart"
-                        android:padding="12dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="20dp"
                         android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:backgroundTint="#F3F4F6"
+                        android:textColor="#1F2937"
+                        app:iconTint="#3B82F6" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnDiseaseInfo"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:text="Taarifa za Ugonjwa wa Tyfoid"
                         android:textAllCaps="false"
+                        android:textSize="16sp"
                         app:icon="@drawable/ic_info"
+                        app:iconSize="20dp"
                         app:iconGravity="textStart"
-                        android:padding="12dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="20dp"
                         android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:backgroundTint="#F3F4F6"
+                        android:textColor="#1F2937"
+                        app:iconTint="#10B981" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnReport"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=" Ripoti Dalili"
+                        android:layout_height="56dp"
+                        android:text="Ripoti Dalili"
                         android:textAllCaps="false"
+                        android:textSize="16sp"
                         app:icon="@drawable/ic_report"
+                        app:iconSize="20dp"
                         app:iconGravity="textStart"
-                        android:padding="12dp"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="20dp"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:backgroundTint="#FEF3C7"
+                        android:textColor="#92400E"
+                        app:iconTint="#F59E0B" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- Support & Services Section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Huduma za Msaada"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#1F2937"
+                android:layout_marginBottom="12dp"
+                android:drawableStart="@drawable/ic_help"
+                android:drawablePadding="8dp"
+                android:drawableTint="#10B981" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="@android:color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Msaada &amp; Vikumbusho"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_color_primary"
-                        android:layout_marginBottom="8dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnReminders"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:text="Vikumbusho vya Chanjo"
                         android:textAllCaps="false"
+                        android:textSize="16sp"
                         app:icon="@drawable/ic_alarm"
+                        app:iconSize="20dp"
                         app:iconGravity="textStart"
-                        android:padding="12dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="20dp"
                         android:layout_marginBottom="8dp"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:backgroundTint="#F3F4F6"
+                        android:textColor="#1F2937"
+                        app:iconTint="#8B5CF6" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnConsultVet"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:text="Wasiliana na Daktari wa Mifugo"
                         android:textAllCaps="false"
+                        android:textSize="16sp"
                         app:icon="@drawable/ic_veterenian"
+                        app:iconSize="20dp"
                         app:iconGravity="textStart"
-                        android:padding="12dp"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="20dp"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:backgroundTint="#DBEAFE"
+                        android:textColor="#1E40AF"
+                        app:iconTint="#3B82F6" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Logout Section in Card View -->
+            <!-- Logout Section -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
+                android:layout_marginBottom="100dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="@color/white">
+                android:backgroundTint="@android:color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -259,94 +560,52 @@
                         android:text="Akaunti"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="@color/text_color_primary"
-                        android:layout_marginBottom="8dp" />
+                        android:textColor="#1F2937"
+                        android:layout_marginBottom="12dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnLogout"
-                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:text="Toka kwenye Akaunti"
                         android:textAllCaps="false"
+                        android:textSize="16sp"
                         app:icon="@drawable/ic_logout"
-                        android:padding="12dp"
-                        android:backgroundTint="@color/accent_color"
-                        app:iconGravity="textStart" />
+                        app:iconSize="20dp"
+                        app:iconGravity="textStart"
+                        android:gravity="start|center_vertical"
+                        android:paddingStart="20dp"
+                        style="@style/Widget.MaterialComponents.Button"
+                        android:backgroundTint="#FF9800"
+                        android:textColor="@android:color/white"
+                        app:iconTint="@android:color/white" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Ukitoka kwenye akaunti, utahitaji kuingia tena kutumia programu hii"
-                        android:textColor="@color/text_color_secondary"
+                        android:textColor="#6B7280"
                         android:textSize="12sp"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="8dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation -->
+    <!-- Modern Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
+        android:layout_height="72dp"
+        android:background="@android:color/white"
+        android:elevation="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@color/primary_color_light"
+        app:itemTextColor="@color/primary_color_light"
+        app:itemActiveIndicatorStyle="@style/CustomBottomNavIndicator"
+        app:labelVisibilityMode="labeled" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- Add this menu file res/menu/bottom_nav_menu.xml -->
-    <!--
-    <?xml version="1.0" encoding="utf-8"?>
-    <menu xmlns:android="http://schemas.android.com/apk/res/android">
-        <item
-            android:id="@+id/navigation_home"
-            android:icon="@drawable/ic_home"
-            android:title="Nyumbani" />
-        <item
-            android:id="@+id/navigation_report"
-            android:icon="@drawable/ic_report"
-            android:title="Ripoti" />
-        <item
-            android:id="@+id/navigation_profile"
-            android:icon="@drawable/ic_profile"
-            android:title="Wasifu" />
-        <item
-            android:id="@+id/navigation_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="Mipangilio" />
-    </menu>
-    -->
-
-    <!-- Add to colors.xml -->
-    <!--
-    <resources>
-        <color name="primary_color">#4CAF50</color>
-        <color name="primary_dark_color">#388E3C</color>
-        <color name="accent_color">#FF9800</color>
-        <color name="background_color">#F5F5F5</color>
-        <color name="text_color_primary">#212121</color>
-        <color name="text_color_secondary">#757575</color>
-        <color name="white">#FFFFFF</color>
-    </resources>
-    -->
-
-    <!-- Note: You'll need to add these additional drawables to your project:
-         - ic_back
-         - default_profile
-         - ic_edit
-         - ic_track
-         - ic_info
-         - ic_report
-         - ic_alarm
-         - ic_veterenian
-         - ic_logout
-         - ic_home
-         - ic_profile
-         - ic_settings
-    -->

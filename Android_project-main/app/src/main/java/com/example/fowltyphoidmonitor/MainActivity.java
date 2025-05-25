@@ -4,18 +4,35 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements AppNotificationManager.NotificationListener {
+
+    // Notification system components
+    private NotificationHelper notificationHelper;
+    private AppNotificationManager notificationManager;
+    private ImageView notificationBell;
+    private LinearLayout alertsContainer;
+    private TextView notificationBadge;
+
     // Profile section views - keep as fields since they're accessed in setUserData()
     private TextView txtUsername, txtLocation, txtFarmSize;
+
+    // ADDED: TextView for the dynamic chicken count in the stats card
+    private TextView txtTotalChickens;
 
     // Navigation elements - keep bottomNavigation as it's used in multiple methods
     private BottomNavigationView bottomNavigation;
@@ -42,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        // Initialize notification components
+        initializeNotificationSystem();
+
         // Initialize views from the layout
         initializeViews();
 
@@ -53,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Load user data from SharedPreferences
         loadUserData();
+
+        // Setup notification alerts
+        setupNotificationAlerts();
+        updateNotificationBadge();
 
         Log.d(TAG, "MainActivity created successfully");
 
@@ -97,6 +121,151 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (notificationManager != null) {
+            notificationManager.removeListener(this);
+        }
+    }
+
+    // Notification System Methods
+    private void initializeNotificationSystem() {
+        try {
+            notificationHelper = new NotificationHelper(this);
+            notificationManager = AppNotificationManager.getInstance();
+            notificationManager.addListener(this);
+        } catch (Exception e) {
+            Log.e(TAG, "Error initializing notification system: " + e.getMessage());
+            // Continue without notification system if classes don't exist
+            notificationHelper = null;
+            notificationManager = null;
+        }
+    }
+
+    private void setupNotificationAlerts() {
+        if (alertsContainer != null && notificationManager != null) {
+            displayNotificationAlerts();
+        }
+    }
+
+    private void displayNotificationAlerts() {
+        if (alertsContainer == null || notificationManager == null) return;
+
+        alertsContainer.removeAllViews();
+        List<NotificationItem> notifications = notificationManager.getUnreadNotifications();
+
+        for (NotificationItem notification : notifications) {
+            View alertView = createAlertView(notification);
+            alertsContainer.addView(alertView);
+        }
+    }
+
+    private View createAlertView(NotificationItem notification) {
+        // Create the alert layout programmatically
+        LinearLayout alertLayout = new LinearLayout(this);
+        alertLayout.setOrientation(LinearLayout.HORIZONTAL);
+        alertLayout.setPadding(32, 24, 32, 24);
+        alertLayout.setGravity(android.view.Gravity.CENTER_VERTICAL);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.setMargins(0, 0, 0, 20);
+        alertLayout.setLayoutParams(layoutParams);
+
+        // Set background based on alert type using colors instead of drawable resources
+        switch (notification.getType()) {
+            case CRITICAL:
+                alertLayout.setBackgroundColor(getColor(android.R.color.holo_red_light));
+                break;
+            case INFO:
+                alertLayout.setBackgroundColor(getColor(android.R.color.holo_blue_light));
+                break;
+            case WARNING:
+                alertLayout.setBackgroundColor(getColor(android.R.color.holo_orange_light));
+                break;
+        }
+
+        // Add icon
+        ImageView icon = new ImageView(this);
+        LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(64, 64);
+        icon.setLayoutParams(iconParams);
+
+        switch (notification.getType()) {
+            case CRITICAL:
+                icon.setImageResource(android.R.drawable.ic_dialog_alert);
+                icon.setColorFilter(getColor(android.R.color.holo_red_dark));
+                break;
+            case INFO:
+                icon.setImageResource(android.R.drawable.ic_dialog_info);
+                icon.setColorFilter(getColor(android.R.color.holo_blue_dark));
+                break;
+            case WARNING:
+                icon.setImageResource(android.R.drawable.ic_dialog_alert);
+                icon.setColorFilter(getColor(android.R.color.holo_orange_dark));
+                break;
+        }
+
+        // Add text
+        TextView textView = new TextView(this);
+        textView.setText(notification.getMessage());
+        textView.setTextSize(14);
+        textView.setTextColor(getColor(android.R.color.black));
+        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        textParams.setMargins(32, 0, 32, 0);
+        textView.setLayoutParams(textParams);
+
+        // Add close button
+        ImageView closeButton = new ImageView(this);
+        LinearLayout.LayoutParams closeParams = new LinearLayout.LayoutParams(48, 48);
+        closeButton.setLayoutParams(closeParams);
+        closeButton.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+        closeButton.setColorFilter(getColor(android.R.color.darker_gray));
+        closeButton.setPadding(8, 8, 8, 8);
+        closeButton.setOnClickListener(v -> {
+            notificationManager.dismissNotification(notification.getId());
+        });
+
+        alertLayout.addView(icon);
+        alertLayout.addView(textView);
+        alertLayout.addView(closeButton);
+
+        return alertLayout;
+    }
+
+    private void openNotificationsPanel() {
+        if (notificationManager == null) return;
+
+        // Here you would open a notifications activity or bottom sheet
+        // For now, we'll just mark all as read
+        List<NotificationItem> unread = notificationManager.getUnreadNotifications();
+        for (NotificationItem notification : unread) {
+            notificationManager.markAsRead(notification.getId());
+        }
+    }
+
+    private void updateNotificationBadge() {
+        if (notificationManager == null) return;
+
+        int unreadCount = notificationManager.getUnreadCount();
+        // You can implement badge display logic here
+        // For example, show/hide a badge on the notification bell
+    }
+
+    @Override
+    public void onNotificationsChanged() {
+        runOnUiThread(() -> {
+            if (notificationManager != null) {
+                displayNotificationAlerts();
+                updateNotificationBadge();
+            }
+        });
+    }
+
+    // Authentication Methods
     private boolean isUserLoggedIn() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         boolean isLoggedIn = prefs.getBoolean(KEY_IS_LOGGED_IN, false);
@@ -116,6 +285,7 @@ public class MainActivity extends AppCompatActivity {
         finish(); // Close MainActivity so they can't go back without logging in
     }
 
+    // Data Loading Methods
     private void loadUserData() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
@@ -134,15 +304,56 @@ public class MainActivity extends AppCompatActivity {
         txtUsername.setText(username);
         txtLocation.setText("Eneo: " + location);
         txtFarmSize.setText("Idadi ya kuku: " + farmSize); // farmSize instead of chickenCount
+
+        // ADDED: Update the total chickens count in the stats card
+        if (txtTotalChickens != null) {
+            txtTotalChickens.setText(String.valueOf(farmSize));
+        }
     }
 
+    // View Initialization Methods
     private void initializeViews() {
         // Profile section - keep these as they're used in setUserData()
         txtUsername = findViewById(R.id.txtUsername);
         txtLocation = findViewById(R.id.txtLocation);
         txtFarmSize = findViewById(R.id.txtFarmSize);
 
-        // Convert the rest to local variables since they're only used in this method or setupClickListeners()
+        // ADDED: Initialize the total chickens TextView from the stats card
+        // Note: You need to add android:id="@+id/txtTotalChickens" to the TextView in your XML layout
+        try {
+            txtTotalChickens = findViewById(R.id.txtTotalChickens);
+            if (txtTotalChickens == null) {
+                Log.w(TAG, "txtTotalChickens not found - you need to add android:id=\"@+id/txtTotalChickens\" to the TextView showing '450' in your XML layout");
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Error finding txtTotalChickens: " + e.getMessage());
+            txtTotalChickens = null;
+        }
+
+        // Notification views - with null checks for optional elements
+        try {
+            notificationBell = findViewById(R.id.notificationBell);
+        } catch (Exception e) {
+            Log.w(TAG, "notificationBell not found in layout: " + e.getMessage());
+            notificationBell = null;
+        }
+
+        try {
+            CardView alertsCard = findViewById(R.id.alertsCard);
+            if (alertsCard != null) {
+                alertsContainer = alertsCard.findViewById(R.id.alertsContainer);
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "alertsCard not found in layout: " + e.getMessage());
+            alertsContainer = null;
+        }
+
+        // Bottom navigation
+        bottomNavigation = findViewById(R.id.bottomNavigation);
+    }
+
+    private void setupClickListeners() {
+        // UI elements - converted to local variables since they're only used here
         CircleImageView profileImage = findViewById(R.id.profileImage);
         MaterialButton btnEditProfile = findViewById(R.id.btnEditProfile);
         MaterialButton btnSymptoms = findViewById(R.id.btnSymptoms);
@@ -151,100 +362,163 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton btnReminders = findViewById(R.id.btnReminders);
         MaterialButton btnConsultVet = findViewById(R.id.btnConsultVet);
         MaterialButton btnLogout = findViewById(R.id.btnLogout);
-        bottomNavigation = findViewById(R.id.bottomNavigation);
         ImageButton btnBack = findViewById(R.id.btnBack);
 
-        // Set up all click listeners right here instead of in a separate method
-        setupButtonListeners(btnEditProfile, btnSymptoms, btnDiseaseInfo, btnReminders,
-                btnConsultVet, btnReport, btnLogout, btnBack);
-    }
+        // Notification bell click listener
+        if (notificationBell != null) {
+            notificationBell.setOnClickListener(v -> openNotificationsPanel());
+        }
 
-    private void setupButtonListeners(MaterialButton btnEditProfile, MaterialButton btnSymptoms,
-                                      MaterialButton btnDiseaseInfo, MaterialButton btnReminders,
-                                      MaterialButton btnConsultVet, MaterialButton btnReport,
-                                      MaterialButton btnLogout, ImageButton btnBack) {
         // Back button click listener
-        btnBack.setOnClickListener(v -> onBackPressed());
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> onBackPressed());
+        }
 
         // Profile section - ENHANCED: Use startActivityForResult for better communication
-        btnEditProfile.setOnClickListener(v -> {
-            try {
-                Intent editIntent = new Intent(MainActivity.this, ProfileEditActivity.class);
-                startActivityForResult(editIntent, REQUEST_CODE_EDIT_PROFILE);
-            } catch (Exception e) {
-                Log.e(TAG, "ProfileEditActivity may not exist yet: " + e.getMessage());
-            }
-        });
+        if (btnEditProfile != null) {
+            btnEditProfile.setOnClickListener(v -> {
+                try {
+                    Intent editIntent = new Intent(MainActivity.this, ProfileEditActivity.class);
+                    startActivityForResult(editIntent, REQUEST_CODE_EDIT_PROFILE);
+                } catch (Exception e) {
+                    Log.e(TAG, "ProfileEditActivity may not exist yet: " + e.getMessage());
+                }
+            });
+        }
 
         // Set up navigation for symptom tracking
-        btnSymptoms.setOnClickListener(v -> {
-            navigateToActivity(SymptomTrackerActivity.class, "SymptomTracker");
-        });
+        if (btnSymptoms != null) {
+            btnSymptoms.setOnClickListener(v -> {
+                // Create a sample health alert for testing (only if notification system is available)
+                if (notificationHelper != null && notificationManager != null) {
+                    try {
+                        notificationHelper.sendHealthAlert(
+                                "Dalili za harara zimeonekana katika kundi C. Angalia hali yao haraka.",
+                                NotificationHelper.AlertType.DISEASE_OUTBREAK
+                        );
+
+                        // Add to in-app notifications
+                        notificationManager.addNotification(new NotificationItem(
+                                generateId(),
+                                "Tahadhari ya Ugonjwa",
+                                "Dalili za harara zimeonekana katika kundi C",
+                                NotificationItem.AlertType.WARNING
+                        ));
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error creating notification: " + e.getMessage());
+                    }
+                }
+
+                navigateToActivity(SymptomTrackerActivity.class, "SymptomTracker");
+            });
+        }
 
         // Set up navigation for disease information
-        btnDiseaseInfo.setOnClickListener(v -> {
-            navigateToActivity(DiseaseInfoActivity.class, "DiseaseInfo");
-        });
+        if (btnDiseaseInfo != null) {
+            btnDiseaseInfo.setOnClickListener(v -> {
+                navigateToActivity(DiseaseInfoActivity.class, "DiseaseInfo");
+            });
+        }
 
         // Set up navigation for reminders
-        btnReminders.setOnClickListener(v -> {
-            navigateToActivity(ReminderActivity.class, "Reminder");
-        });
+        if (btnReminders != null) {
+            btnReminders.setOnClickListener(v -> {
+                // Create a vaccination reminder for testing (only if notification system is available)
+                if (notificationHelper != null && notificationManager != null) {
+                    try {
+                        notificationHelper.sendVaccinationReminder("Kundi D", 3);
+
+                        // Add to in-app notifications
+                        notificationManager.addNotification(new NotificationItem(
+                                generateId(),
+                                "Chanjo Inahitajika",
+                                "Chanjo inahitajika kwa Kundi D baada ya siku 3",
+                                NotificationItem.AlertType.CRITICAL
+                        ));
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error creating notification: " + e.getMessage());
+                    }
+                }
+
+                navigateToActivity(ReminderActivity.class, "Reminder");
+            });
+        }
 
         // Set up navigation for vet consultation
-        btnConsultVet.setOnClickListener(v -> {
-            navigateToActivity(VetConsultationActivity.class, "VetConsultation");
-        });
+        if (btnConsultVet != null) {
+            btnConsultVet.setOnClickListener(v -> {
+                // Simulate vet response for testing (only if notification system is available)
+                if (notificationHelper != null && notificationManager != null) {
+                    try {
+                        notificationHelper.sendVetResponse("Mwalimu",
+                                "Tumia dawa za antibiotics kwa siku 5. Pia hakikisha chakula ni safi.");
+
+                        // Add to in-app notifications
+                        notificationManager.addNotification(new NotificationItem(
+                                generateId(),
+                                "Jibu la Daktari",
+                                "Dkt. Mwalimu amejibu swali lako",
+                                NotificationItem.AlertType.INFO
+                        ));
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error creating notification: " + e.getMessage());
+                    }
+                }
+
+                navigateToActivity(VetConsultationActivity.class, "VetConsultation");
+            });
+        }
 
         // Set up navigation for reporting symptoms
-        btnReport.setOnClickListener(v -> {
-            navigateToActivity(ReportSymptomsActivity.class, "ReportSymptoms");
-        });
+        if (btnReport != null) {
+            btnReport.setOnClickListener(v -> {
+                navigateToActivity(ReportSymptomsActivity.class, "ReportSymptoms");
+            });
+        }
 
         // Set up logout function
-        btnLogout.setOnClickListener(v -> {
-            logout();
-        });
-    }
-
-    private void setupClickListeners() {
-        // This method is now empty since we're handling click listeners in initializeViews
-        // You can remove this method, but I'm keeping it here to maintain the same structure
-        // as your original code for easier comparison
+        if (btnLogout != null) {
+            btnLogout.setOnClickListener(v -> {
+                logout();
+            });
+        }
     }
 
     private void setupBottomNavigation() {
-        bottomNavigation.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
+        if (bottomNavigation != null) {
+            bottomNavigation.setOnItemSelectedListener(item -> {
+                int itemId = item.getItemId();
 
-            if (itemId == R.id.navigation_home) {
-                // Already on home screen
-                return true;
-            } else if (itemId == R.id.navigation_report) {
-                navigateToActivity(ReportSymptomsActivity.class, "ReportSymptoms");
-                return true;
-            } else if (itemId == R.id.navigation_profile) {
-                try {
-                    // Navigate to profile screen - replace with your actual profile activity
-                    navigateToActivity(ProfileActivity.class, "Profile");
+                if (itemId == R.id.navigation_home) {
+                    // Already on home screen
                     return true;
-                } catch (Exception e) {
-                    Log.e(TAG, "ProfileActivity may not exist yet: " + e.getMessage());
-                }
-            } else if (itemId == R.id.navigation_settings) {
-                try {
-                    // Navigate to settings screen - replace with your actual settings activity
-                    navigateToActivity(SettingsActivity.class, "Settings");
+                } else if (itemId == R.id.navigation_report) {
+                    navigateToActivity(ReportSymptomsActivity.class, "ReportSymptoms");
                     return true;
-                } catch (Exception e) {
-                    Log.e(TAG, "SettingsActivity may not exist yet: " + e.getMessage());
+                } else if (itemId == R.id.navigation_profile) {
+                    try {
+                        // Navigate to profile screen - replace with your actual profile activity
+                        navigateToActivity(ProfileActivity.class, "Profile");
+                        return true;
+                    } catch (Exception e) {
+                        Log.e(TAG, "ProfileActivity may not exist yet: " + e.getMessage());
+                    }
+                } else if (itemId == R.id.navigation_settings) {
+                    try {
+                        // Navigate to settings screen - replace with your actual settings activity
+                        navigateToActivity(SettingsActivity.class, "Settings");
+                        return true;
+                    } catch (Exception e) {
+                        Log.e(TAG, "SettingsActivity may not exist yet: " + e.getMessage());
+                    }
                 }
-            }
 
-            return false;
-        });
+                return false;
+            });
+        }
     }
 
+    // Utility Methods
     private void logout() {
         try {
             // Clear login state
@@ -261,6 +535,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, "Error during logout: " + e.getMessage());
         }
+    }
+
+    private int generateId() {
+        return (int) System.currentTimeMillis();
     }
 
     /**

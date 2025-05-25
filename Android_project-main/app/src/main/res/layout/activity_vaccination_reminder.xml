@@ -1,163 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/background_light">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mlinzi wa Kuku"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ratiba ya Chanjo"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/edtDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:hint="Chagua tarehe"
+        android:focusable="false"
+        android:padding="10dp"/>
 
-        <!-- Header -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Weka Kikumbusho cha Chanjo"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:layout_marginBottom="24dp"
-            android:textColor="@color/accent_color" />
+    <EditText
+        android:id="@+id/edtTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Chagua muda"
+        android:focusable="false"
+        android:padding="10dp"/>
 
-        <!-- Vaccine Type Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Aina ya Chanjo (mfano: Fowl Typhoid, Newcastle)"
-            app:startIconDrawable="@drawable/ic_vaccine">
+    <EditText
+        android:id="@+id/edtVaccineType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ingiza aina ya chanjo"
+        android:padding="10dp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtVaccineType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:maxLines="1" />
+    <EditText
+        android:id="@+id/edtChickenBatch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Ingiza kundi la kuku"
+        android:padding="10dp"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/btnSetReminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set Reminder"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/primary_color"
+        android:padding="10dp"/>
 
-        <!-- Chicken Batch Input (Optional) -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Kikundi cha Kuku (si lazima)"
-            app:startIconDrawable="@android:drawable/ic_menu_my_calendar">
+    <Button
+        android:id="@+id/btnSetDailyReminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set Daily Reminder"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/primary_color"
+        android:padding="10dp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtChickenBatch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:maxLines="1" />
+    <!-- Add any other elements here -->
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Date Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Chagua Tarehe"
-            app:startIconDrawable="@android:drawable/ic_menu_my_calendar">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:clickable="true"
-                android:inputType="none" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Time Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:hint="Chagua Muda"
-            app:startIconDrawable="@android:drawable/ic_menu_recent_history">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:clickable="true"
-                android:inputType="none" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Buttons Container -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp">
-
-            <!-- Set One-time Reminder Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSetReminder"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="12dp"
-                android:text="Weka Kikumbusho cha Mara Moja"
-                android:textSize="16sp"
-                app:icon="@drawable/ic_vaccine"
-                app:iconGravity="textStart"
-                style="@style/Widget.Material3.Button" />
-
-            <!-- Set Daily Reminder Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSetDailyReminder"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="Weka Kikumbusho cha Kila Siku"
-                android:textSize="16sp"
-                app:icon="@android:drawable/ic_menu_my_calendar"
-                app:iconGravity="textStart"
-                style="@style/Widget.Material3.Button.OutlinedButton" />
-
-        </LinearLayout>
-
-        <!-- Instructions -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Maelezo:"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="• Kikumbusho cha mara moja: Kitakukumbusha mara moja tu wakati ulioochagua\n• Kikumbusho cha kila siku: Kitakukumbusha kila siku kuanzia tarehe uliyochagua"
-                    android:textSize="14sp"
-                    android:lineSpacingExtra="4dp" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>
