@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         }
     }
 
+
     private void setupNotificationAlerts() {
         if (alertsContainer != null && notificationManager != null) {
             displayNotificationAlerts();
