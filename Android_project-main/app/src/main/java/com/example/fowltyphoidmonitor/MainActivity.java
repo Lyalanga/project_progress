@@ -89,6 +89,9 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
                 Log.e(TAG, "ProfileEditActivity may not exist yet: " + e.getMessage());
             }
         }
+
+        // Add some sample notifications for testing
+        addSampleNotifications();
     }
 
     @Override
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         // IMPORTANT: Reload user data when returning from other activities
         // This ensures profile updates are reflected immediately
         loadUserData();
+        updateNotificationBadge(); // Update badge when returning to activity
         Log.d(TAG, "User data reloaded in onResume");
     }
 
@@ -155,6 +159,18 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         alertsContainer.removeAllViews();
         List<NotificationItem> notifications = notificationManager.getUnreadNotifications();
 
+        // If no notifications, show a message
+        if (notifications.isEmpty()) {
+            TextView noNotificationsText = new TextView(this);
+            noNotificationsText.setText("Hakuna tahadhari za hivi karibuni");
+            noNotificationsText.setTextColor(getColor(android.R.color.darker_gray));
+            noNotificationsText.setTextSize(14);
+            noNotificationsText.setPadding(32, 24, 32, 24);
+            noNotificationsText.setGravity(android.view.Gravity.CENTER);
+            alertsContainer.addView(noNotificationsText);
+            return;
+        }
+
         for (NotificationItem notification : notifications) {
             View alertView = createAlertView(notification);
             alertsContainer.addView(alertView);
@@ -178,15 +194,21 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         // Set background based on alert type using colors instead of drawable resources
         switch (notification.getType()) {
             case CRITICAL:
-                alertLayout.setBackgroundColor(getColor(android.R.color.holo_red_light));
+                alertLayout.setBackgroundColor(0xFFFFEBEE); // Light red background
                 break;
             case INFO:
-                alertLayout.setBackgroundColor(getColor(android.R.color.holo_blue_light));
+                alertLayout.setBackgroundColor(0xFFE3F2FD); // Light blue background
                 break;
             case WARNING:
-                alertLayout.setBackgroundColor(getColor(android.R.color.holo_orange_light));
+                alertLayout.setBackgroundColor(0xFFFFF3E0); // Light orange background
+                break;
+            case SUCCESS:
+                alertLayout.setBackgroundColor(0xFFE8F5E8); // Light green background
                 break;
         }
+
+        // Set corner radius programmatically
+        alertLayout.setBackground(getResources().getDrawable(android.R.drawable.dialog_holo_light_frame));
 
         // Add icon
         ImageView icon = new ImageView(this);
@@ -196,15 +218,19 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         switch (notification.getType()) {
             case CRITICAL:
                 icon.setImageResource(android.R.drawable.ic_dialog_alert);
-                icon.setColorFilter(getColor(android.R.color.holo_red_dark));
+                icon.setColorFilter(0xFFDC2626); // Red
                 break;
             case INFO:
                 icon.setImageResource(android.R.drawable.ic_dialog_info);
-                icon.setColorFilter(getColor(android.R.color.holo_blue_dark));
+                icon.setColorFilter(0xFF2563EB); // Blue
                 break;
             case WARNING:
                 icon.setImageResource(android.R.drawable.ic_dialog_alert);
-                icon.setColorFilter(getColor(android.R.color.holo_orange_dark));
+                icon.setColorFilter(0xFFF59E0B); // Orange
+                break;
+            case SUCCESS:
+                icon.setImageResource(android.R.drawable.checkbox_on_background);
+                icon.setColorFilter(0xFF10B981); // Green
                 break;
         }
 
@@ -212,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         TextView textView = new TextView(this);
         textView.setText(notification.getMessage());
         textView.setTextSize(14);
-        textView.setTextColor(getColor(android.R.color.black));
+        textView.setTextColor(0xFF1F2937); // Dark gray
         LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
         textParams.setMargins(32, 0, 32, 0);
@@ -223,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         LinearLayout.LayoutParams closeParams = new LinearLayout.LayoutParams(48, 48);
         closeButton.setLayoutParams(closeParams);
         closeButton.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-        closeButton.setColorFilter(getColor(android.R.color.darker_gray));
+        closeButton.setColorFilter(0xFF6B7280); // Gray
         closeButton.setPadding(8, 8, 8, 8);
         closeButton.setOnClickListener(v -> {
             notificationManager.dismissNotification(notification.getId());
@@ -239,20 +265,41 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
     private void openNotificationsPanel() {
         if (notificationManager == null) return;
 
-        // Here you would open a notifications activity or bottom sheet
-        // For now, we'll just mark all as read
+        // Mark all notifications as read when opening the panel
         List<NotificationItem> unread = notificationManager.getUnreadNotifications();
         for (NotificationItem notification : unread) {
             notificationManager.markAsRead(notification.getId());
         }
+
+        // You can also create a dedicated NotificationsActivity here
+        Toast.makeText(this, "Tahadhari zote zimesomwa", Toast.LENGTH_SHORT).show();
     }
 
     private void updateNotificationBadge() {
         if (notificationManager == null) return;
 
         int unreadCount = notificationManager.getUnreadCount();
-        // You can implement badge display logic here
-        // For example, show/hide a badge on the notification bell
+
+        // Update the notification badge
+        if (notificationBadge != null) {
+            if (unreadCount > 0) {
+                notificationBadge.setVisibility(View.VISIBLE);
+                notificationBadge.setText(String.valueOf(unreadCount > 99 ? "99+" : unreadCount));
+            } else {
+                notificationBadge.setVisibility(View.GONE);
+            }
+        }
+
+        // Change notification bell color based on unread count
+        if (notificationBell != null) {
+            if (unreadCount > 0) {
+                notificationBell.setColorFilter(0xFFF59E0B); // Orange/Yellow when there are notifications
+            } else {
+                notificationBell.setColorFilter(0xFFFFFFFF); // White when no notifications
+            }
+        }
+
+        Log.d(TAG, "Notification badge updated: " + unreadCount + " unread notifications");
     }
 
     @Override
@@ -263,6 +310,33 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
                 updateNotificationBadge();
             }
         });
+    }
+
+    // Add sample notifications for testing
+    private void addSampleNotifications() {
+        if (notificationManager == null) return;
+
+        // Add some sample notifications
+        notificationManager.addNotification(new NotificationItem(
+                generateId(),
+                "Chanjo Inahitajika",
+                "Chanjo inahitajika kwa Kundi A baada ya siku 2",
+                NotificationItem.AlertType.CRITICAL
+        ));
+
+        notificationManager.addNotification(new NotificationItem(
+                generateId(),
+                "Ukumbusho",
+                "Ukumbusho wa matibabu kwa Kundi B",
+                NotificationItem.AlertType.INFO
+        ));
+
+        notificationManager.addNotification(new NotificationItem(
+                generateId(),
+                "Jibu la Daktari",
+                "Dkt. Smith amejibu swali lako",
+                NotificationItem.AlertType.INFO
+        ));
     }
 
     // Authentication Methods
@@ -301,9 +375,9 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
     }
 
     private void setUserData(String username, String location, int farmSize) {
-        txtUsername.setText(username);
-        txtLocation.setText("Eneo: " + location);
-        txtFarmSize.setText("Idadi ya kuku: " + farmSize); // farmSize instead of chickenCount
+        if (txtUsername != null) txtUsername.setText(username);
+        if (txtLocation != null) txtLocation.setText("Eneo: " + location);
+        if (txtFarmSize != null) txtFarmSize.setText("Idadi ya kuku: " + farmSize);
 
         // ADDED: Update the total chickens count in the stats card
         if (txtTotalChickens != null) {
@@ -319,7 +393,6 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         txtFarmSize = findViewById(R.id.txtFarmSize);
 
         // ADDED: Initialize the total chickens TextView from the stats card
-        // Note: You need to add android:id="@+id/txtTotalChickens" to the TextView in your XML layout
         try {
             txtTotalChickens = findViewById(R.id.txtTotalChickens);
             if (txtTotalChickens == null) {
@@ -336,6 +409,13 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         } catch (Exception e) {
             Log.w(TAG, "notificationBell not found in layout: " + e.getMessage());
             notificationBell = null;
+        }
+
+        try {
+            notificationBadge = findViewById(R.id.notificationBadge);
+        } catch (Exception e) {
+            Log.w(TAG, "notificationBadge not found in layout: " + e.getMessage());
+            notificationBadge = null;
         }
 
         try {

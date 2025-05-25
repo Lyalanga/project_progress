@@ -42,16 +42,43 @@
             android:layout_marginTop="20dp" />
 
         <!-- Notification bell with ID added -->
-        <ImageView
-            android:id="@+id/notificationBell"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_notifications"
-            app:tint="@android:color/white"
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="24dp">
+
+            <!-- Notification Bell Icon -->
+            <ImageView
+                android:id="@+id/notificationBell"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_notifications"
+                app:tint="@android:color/white"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <!-- Notification Badge -->
+            <TextView
+                android:id="@+id/notificationBadge"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="-4dp"
+                android:layout_marginEnd="-4dp"
+                android:background="@android:drawable/button_onoff_indicator_on"
+                android:backgroundTint="#FF4444"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@android:color/white"
+                android:textSize="8sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
