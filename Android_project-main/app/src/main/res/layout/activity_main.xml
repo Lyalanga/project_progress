@@ -153,13 +153,6 @@
                                 android:textStyle="bold"
                                 android:textColor="#1F2937" />
 
-                            <TextView
-                                android:id="@+id/txtLocation"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Eneo: Arusha"
-                                android:textColor="#6B7280"
-                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/txtFarmSize"
@@ -213,7 +206,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Ndege Jumla"
+                                android:text="Jumla ya Kuku"
                                 android:textSize="10sp"
                                 android:textColor="@android:color/white"
                                 android:alpha="0.9" />
@@ -232,15 +225,16 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="3"
+                                android:text="Eneo"
                                 android:textSize="20sp"
                                 android:textStyle="bold"
                                 android:textColor="@android:color/white" />
 
                             <TextView
+                                android:id="@+id/txtLocation"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Makundi Hai"
+                                android:text="ikut"
                                 android:textSize="10sp"
                                 android:textColor="@android:color/white"
                                 android:alpha="0.9" />
@@ -343,7 +337,6 @@
                                 android:layout_height="20dp"
                                 android:src="@drawable/ic_close"
                                 app:tint="#6B7280"
-                                android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="2dp" />
                         </LinearLayout>
 
@@ -378,7 +371,6 @@
                                 android:layout_height="20dp"
                                 android:src="@drawable/ic_close"
                                 app:tint="#6B7280"
-                                android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="2dp" />
                         </LinearLayout>
 
@@ -412,7 +404,6 @@
                                 android:layout_height="20dp"
                                 android:src="@drawable/ic_close"
                                 app:tint="#6B7280"
-                                android:background="?attr/selectableItemBackgroundBorderless"
                                 android:padding="2dp" />
                         </LinearLayout>
 
@@ -420,18 +411,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Health Tracking Section -->
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Hali ya Makundi"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#1F2937"
-                android:layout_marginBottom="12dp"
-                android:drawableStart="@drawable/ic_activity"
-                android:drawablePadding="8dp"
-                android:drawableTint="#3B82F6" />
+
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -469,10 +449,10 @@
                         android:id="@+id/btnDiseaseInfo"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
-                        android:text="Taarifa za Ugonjwa wa Tyfoid"
+                        android:text="Fahamu zaidi Kuhusu Tyfodi ya Kuku"
                         android:textAllCaps="false"
                         android:textSize="16sp"
-                        app:icon="@drawable/ic_info"
+                        app:icon="@drawable/ic_book"
                         app:iconSize="20dp"
                         app:iconGravity="textStart"
                         android:gravity="start|center_vertical"

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
     private TextView txtUsername, txtLocation, txtFarmSize;
 
     // ADDED: TextView for the dynamic chicken count in the stats card
-    private TextView txtTotalChickens;
+    private TextView txtTotalChickens, getTxtLocation;
 
     // Navigation elements - keep bottomNavigation as it's used in multiple methods
     private BottomNavigationView bottomNavigation;

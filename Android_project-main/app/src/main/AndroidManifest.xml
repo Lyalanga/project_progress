@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,9 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FowlTyphoidMonitor">
 
-        <!-- Make LoginActivity the launcher activity -->
+        <!-- SPLASH ACTIVITY - This should be the LAUNCHER activity -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.FowlTyphoidMonitor.Splash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,12 @@
             </intent-filter>
         </activity>
 
-        <!-- MainActivity should not have the launcher intent filter -->
+        <!-- LOGIN ACTIVITY - Remove launcher intent-filter from here -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+
+        <!-- MAIN ACTIVITY -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />
@@ -45,6 +50,7 @@
         <activity android:name=".ForgotPasswordActivity" android:exported="false" />
         <activity android:name=".HistoryActivity" android:exported="false" />
         <activity android:name=".RegisterActivity" android:exported="false" />
+        <activity android:name=".NotificationsActivity" android:exported="false" />
 
         <receiver
             android:name=".ReminderReceiver"
