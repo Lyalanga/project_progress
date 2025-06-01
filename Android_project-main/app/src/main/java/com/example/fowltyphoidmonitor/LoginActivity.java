@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private Button btnRegister;
     private TextView tvForgotPassword;
+    private TextView tvVet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
+        tvVet = findViewById(R.id.tvVet);
     }
 
     private void setupClickListeners() {
@@ -83,6 +85,21 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Log.e(TAG, "Error navigating to ForgotPasswordActivity: " + e.getMessage());
                     Toast.makeText(LoginActivity.this, "Password recovery feature coming soon", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        // Separate click listener for vet functionality
+        tvVet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to vet/admin section
+                try {
+                    Intent intent = new Intent(LoginActivity.this, AdminLoginActivity.class);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    Log.e(TAG, "Error navigating to AdminLoginActivity: " + e.getMessage());
+                    Toast.makeText(LoginActivity.this, "Admin section not available", Toast.LENGTH_SHORT).show();
                 }
             }
         });

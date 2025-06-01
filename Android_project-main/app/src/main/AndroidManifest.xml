@@ -50,7 +50,18 @@
         <activity android:name=".ForgotPasswordActivity" android:exported="false" />
         <activity android:name=".HistoryActivity" android:exported="false" />
         <activity android:name=".RegisterActivity" android:exported="false" />
+        <activity android:name=".AdminRegisterActivity" android:exported="false" />
+        <activity android:name=".AdminMainActivity" android:exported="false" />
+        <activity android:name=".AdminLoginActivity" android:exported="false" />
+        <activity android:name=".SetRemindersActivity" android:exported="false" />
+        <activity android:name=".ManageUsersActivity" android:exported="false" />
+        <activity android:name=".ManageDiseaseInfoActivity" android:exported="false" />
+        <activity android:name=".AdminProfileEditActivity" android:exported="false" />
+        <activity android:name=".AdminConsultationsActivity" android:exported="false" />
+        <activity android:name=".AdminSettingsActivity" android:exported="false" />
         <activity android:name=".NotificationsActivity" android:exported="false" />
+        <activity android:name=".SendAlertsActivity" android:exported="false" />
+        <activity android:name=".AdminProfileEditActivity" android:exported="false" />
 
         <receiver
             android:name=".ReminderReceiver"
