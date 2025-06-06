@@ -49,7 +49,7 @@
         <activity android:name=".ReminderActivity" android:exported="false" />
         <activity android:name=".VetConsultationActivity" android:exported="false" />
         <activity android:name=".ReportSymptomsActivity" android:exported="false" />
-        <activity android:name=".ProfileEditActivity" android:exported="false" />
+        <activity android:name=".FarmerProfileEditActivity" android:exported="false" />
         <activity android:name=".ProfileActivity" android:exported="false" />
         <activity android:name=".SettingsActivity" android:exported="false" />
         <activity android:name=".ForgotPasswordActivity" android:exported="false" />

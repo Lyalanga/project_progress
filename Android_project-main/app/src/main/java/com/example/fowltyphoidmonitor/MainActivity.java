@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         if (!isProfileComplete()) {
             try {
                 Log.d(TAG, "Profile incomplete, redirecting to profile setup");
-                navigateToActivityForResult(ProfileEditActivity.class, "ProfileEdit", REQUEST_CODE_EDIT_PROFILE);
+                navigateToActivityForResult(FarmerProfileEditActivity.class, "ProfileEdit", REQUEST_CODE_EDIT_PROFILE);
             } catch (Exception e) {
                 Log.e(TAG, "ProfileEditActivity may not exist yet: " + e.getMessage());
             }
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
 
         if (requestCode == REQUEST_CODE_EDIT_PROFILE && resultCode == RESULT_OK) {
             // Profile was updated, reload the data
-            if (data != null && data.getBooleanExtra(ProfileEditActivity.EXTRA_PROFILE_UPDATED, false)) {
+            if (data != null && data.getBooleanExtra(FarmerProfileEditActivity.EXTRA_PROFILE_UPDATED, false)) {
                 Log.d(TAG, "Profile updated, reloading data");
                 loadUserData();
                 Toast.makeText(this, "Wasifu umesasishwa", Toast.LENGTH_SHORT).show();
@@ -459,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements AppNotificationMa
         if (btnEditProfile != null) {
             btnEditProfile.setOnClickListener(v -> {
                 try {
-                    Intent editIntent = new Intent(MainActivity.this, ProfileEditActivity.class);
+                    Intent editIntent = new Intent(MainActivity.this, FarmerProfileEditActivity.class);
                     startActivityForResult(editIntent, REQUEST_CODE_EDIT_PROFILE);
                 } catch (Exception e) {
                     Log.e(TAG, "ProfileEditActivity may not exist yet: " + e.getMessage());
