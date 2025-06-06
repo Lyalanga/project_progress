@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private Button btnRegister;
     private TextView tvForgotPassword;
-    private TextView tvVet;
+    // Removed tvVet as it doesn't exist in the layout
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
-        tvVet = findViewById(R.id.tvVet);
+        // Removed tvVet initialization as it doesn't exist in the layout
     }
 
     private void setupClickListeners() {
@@ -89,20 +89,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Separate click listener for vet functionality
-        tvVet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to vet/admin section
-                try {
-                    Intent intent = new Intent(LoginActivity.this, AdminLoginActivity.class);
-                    startActivity(intent);
-                } catch (Exception e) {
-                    Log.e(TAG, "Error navigating to AdminLoginActivity: " + e.getMessage());
-                    Toast.makeText(LoginActivity.this, "Admin section not available", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        // Removed tvVet click listener as tvVet doesn't exist in the layout
+        // If you need admin access, you can add it through the forgot password or another mechanism
     }
 
     private void attemptLogin() {

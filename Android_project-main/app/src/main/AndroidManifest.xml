@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.fowltyphoidmonitor">
 
-    <!-- Permissions if needed -->
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FowlTyphoidMonitor">
 
-        <!-- SPLASH ACTIVITY - This should be the LAUNCHER activity -->
+        <!-- SPLASH ACTIVITY - Main launcher activity -->
         <activity
             android:name=".SplashActivity"
             android:theme="@style/Theme.FowlTyphoidMonitor.Splash"
@@ -28,7 +28,12 @@
             </intent-filter>
         </activity>
 
-        <!-- LOGIN ACTIVITY - Remove launcher intent-filter from here -->
+        <!-- USER TYPE SELECTION ACTIVITY - Removed duplicate launcher intent-filter -->
+        <activity
+            android:name=".UserTypeSelectionActivity"
+            android:exported="false" />
+
+        <!-- LOGIN ACTIVITY -->
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
@@ -55,14 +60,13 @@
         <activity android:name=".AdminLoginActivity" android:exported="false" />
         <activity android:name=".SetRemindersActivity" android:exported="false" />
         <activity android:name=".ManageUsersActivity" android:exported="false" />
-        <activity android:name=".ManageDiseaseInfoActivity" android:exported="false" />
         <activity android:name=".AdminProfileEditActivity" android:exported="false" />
         <activity android:name=".AdminConsultationsActivity" android:exported="false" />
         <activity android:name=".AdminSettingsActivity" android:exported="false" />
         <activity android:name=".NotificationsActivity" android:exported="false" />
         <activity android:name=".SendAlertsActivity" android:exported="false" />
-        <activity android:name=".AdminProfileEditActivity" android:exported="false" />
 
+        <!-- Broadcast Receiver -->
         <receiver
             android:name=".ReminderReceiver"
             android:enabled="true"

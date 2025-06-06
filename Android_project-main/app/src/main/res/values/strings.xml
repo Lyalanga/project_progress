@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FowlTyphoidMonitor</string>
+    <string name="app_name">Kudhibiti Tyfoid Ya Kuku</string>
     <string name="msaada">Msaada</string>
     <string name="wasiliana_na_daktari_wa_mifugo_kwa_ushauri_zaidi">*Wasiliana na daktari wa mifugo kwa ushauri zaidi</string>
     <string name="chakula_na_maji_safi">Chakula na maji safi</string>
@@ -34,8 +34,8 @@
 
     <!-- Privacy Settings strings -->
     <string name="privacy_settings">Privacy Settings</string>
-    <string name="back">Back</string>
-    <string name="save_settings">Save Settings</string>
+    <string name="back">Nyuma</string>
+    <string name="save_settings">Hifadhi Mipangilio</string>
 
     <!-- Data Collection -->
     <string name="data_collection">Data Collection</string>

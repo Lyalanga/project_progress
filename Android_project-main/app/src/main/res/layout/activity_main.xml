@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mlinzi wa Kuku"
+            android:text="Kudhibiti Tyfoid Ya Kuku"
             android:textColor="@android:color/white"
             android:textSize="24sp"
             android:textStyle="bold"

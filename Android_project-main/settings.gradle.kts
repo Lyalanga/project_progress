@@ -16,9 +16,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }  // Fixed: moved comment and added closing brace
     }
 }
 
 rootProject.name = "FowlTyphoidMonitor"
 include(":app")
- 
