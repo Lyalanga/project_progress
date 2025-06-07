@@ -50,4 +50,38 @@
     <!-- Notifications -->
     <string name="notifications">Notifications</string>
     <string name="notifications_description">Receive alerts about potential fowl typhoid outbreaks in your area</string>
+
+    <!-- Launcher Activity -->
+    <string name="loading">Inapakia...</string>
+    <string name="checking_user_status">Inaangalia hali ya mtumiaji...</string>
+    <string name="redirecting_to_login">Inakuelekeza kwenye skrini ya kuingia...</string>
+    <string name="redirecting_to_dashboard">Inakuelekeza kwenye dashibodi...</string>
+    <string name="welcome_first_time">Karibu! Inaandaa kwa mara ya kwanza...</string>
+    <string name="error_occurred">Hitilafu imetokea. Inakuelekeza upya...</string>
+
+    Dashboard -->
+    <string name="dashboard">Dashibodi</string>
+    <string name="reports">Ripoti</string>
+    <string name="consultations">Ushauri</string>
+    <string name="alerts">Arifa</string>
+    <string name="analytics">Uchambuzi</string>
+    <string name="settings">Mipangilio</string>
+
+    <!-- Error Messages -->
+    <string name="error_generic">Hitilafu imetokea</string>
+    <string name="error_network">Tatizo la mtandao</string>
+    <string name="error_login">Hitilafu ya kuingia</string>
+    <string name="something_went_wrong">Kitu kimekosa</string>
+
+    <!-- Content Descriptions for Accessibility -->
+    <string name="profile_image">Picha ya wasifu</string>
+    <string name="menu_button">Kitufe cha menyu</string>
+    <string name="search_button">Kitufe cha utafutaji</string>
+    <string name="notification_icon">Aikoni ya arifa</string>
+
+    <!-- Success Messages -->
+    <string name="login_successful">Umeingia kwa mafanikio</string>
+    <string name="logout_successful">Umetoka kwa mafanikio</string>
+    <string name="profile_updated">Wasifu umesasishwa</string>
+    <string name="dashboard_updated">Dashboard imesasishwa</string>
 </resources>

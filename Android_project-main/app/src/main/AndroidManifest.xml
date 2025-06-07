@@ -17,9 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FowlTyphoidMonitor">
 
-        <!-- SPLASH ACTIVITY - Main launcher activity -->
+        <!-- LAUNCHER ACTIVITY - Main launcher activity -->
         <activity
-            android:name=".SplashActivity"
+            android:name=".LauncherActivity"
             android:theme="@style/Theme.FowlTyphoidMonitor.Splash"
             android:exported="true">
             <intent-filter>
@@ -28,7 +28,23 @@
             </intent-filter>
         </activity>
 
-        <!-- USER TYPE SELECTION ACTIVITY - Removed duplicate launcher intent-filter -->
+        <!-- SPLASH ACTIVITY -->
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.FowlTyphoidMonitor.Splash"
+            android:exported="false" />
+
+        <!-- LOGIN SELECTION ACTIVITY - New activity for choosing user type -->
+        <activity
+            android:name=".LoginSelectionActivity"
+            android:exported="false" />
+
+        <!-- REGISTER SELECTION ACTIVITY - New activity for choosing registration type -->
+        <activity
+            android:name=".RegisterSelectionActivity"
+            android:exported="false" />
+
+        <!-- USER TYPE SELECTION ACTIVITY -->
         <activity
             android:name=".UserTypeSelectionActivity"
             android:exported="false" />
@@ -65,6 +81,12 @@
         <activity android:name=".AdminSettingsActivity" android:exported="false" />
         <activity android:name=".NotificationsActivity" android:exported="false" />
         <activity android:name=".SendAlertsActivity" android:exported="false" />
+        <activity android:name=".FarmerConsultationsActivity" android:exported="false" />
+        <activity android:name=".FarmerReportsActivity" android:exported="false" />
+        <activity android:name=".DashboardActivity" android:exported="false" />
+        <activity android:name=".SubmitReportActivity" android:exported="false" />
+
+
 
         <!-- Broadcast Receiver -->
         <receiver
