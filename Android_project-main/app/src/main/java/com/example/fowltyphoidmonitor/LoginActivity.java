@@ -20,13 +20,13 @@ public class LoginActivity extends AppCompatActivity {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_PROFILE_COMPLETE = "isProfileComplete";
+    private static final String KEY_USER_ROLE = "userRole";  // new key for user role
 
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
     private Button btnRegister;
     private TextView tvForgotPassword;
-    // Removed tvVet as it doesn't exist in the layout
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnRegister = findViewById(R.id.btnRegister);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
-        // Removed tvVet initialization as it doesn't exist in the layout
     }
 
     private void setupClickListeners() {
@@ -88,9 +87,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
-        // Removed tvVet click listener as tvVet doesn't exist in the layout
-        // If you need admin access, you can add it through the forgot password or another mechanism
     }
 
     private void attemptLogin() {
@@ -103,13 +99,17 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // For demo purposes, we'll use a simple authentication
-        // In a real app, you should validate against a secure database or API
         if (validateCredentials(username, password)) {
-            // Save login state
-            saveLoginState(username, password);
+            // Detect role based on username pattern (simple logic)
+            String role;
+            if (username.toLowerCase().startsWith("vet")) {
+                role = "vet";
+            } else {
+                role = "farmer";
+            }
 
-            // Redirect to main activity
+            saveLoginState(username, password, role);
+
             redirectToMain();
         } else {
             Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show();
@@ -117,40 +117,35 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean validateCredentials(String username, String password) {
-        // In a real app, you would check against saved credentials or a server
-        // For demo, we'll check against saved credentials or accept any credentials if none are saved
-
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String savedUsername = prefs.getString(KEY_USERNAME, "");
         String savedPassword = prefs.getString(KEY_PASSWORD, "");
 
-        // If we have saved credentials, check against them
         if (!savedUsername.isEmpty() && !savedPassword.isEmpty()) {
             return username.equals(savedUsername) && password.equals(savedPassword);
         }
 
-        // For demo purposes, if no credentials are saved, accept any
-        // REMOVE THIS IN PRODUCTION - here just to make testing easier
+        // Accept any credentials if none saved (for demo only)
         return true;
     }
 
-    private void saveLoginState(String username, String password) {
+    // Modified method to save user role as well
+    private void saveLoginState(String username, String password, String role) {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
-        // Save username and password (in a real app, NEVER store passwords in plain text)
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_PASSWORD, password);
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
+        editor.putString(KEY_USER_ROLE, role);  // save role here
 
-        // If this is first login, mark profile as incomplete
         if (!prefs.contains(KEY_PROFILE_COMPLETE)) {
             editor.putBoolean(KEY_PROFILE_COMPLETE, false);
         }
 
         editor.apply();
 
-        Log.d(TAG, "User logged in successfully: " + username);
+        Log.d(TAG, "User logged in successfully: " + username + " with role: " + role);
     }
 
     private boolean isUserLoggedIn() {
@@ -160,10 +155,20 @@ public class LoginActivity extends AppCompatActivity {
         return isLoggedIn;
     }
 
+    // Redirect based on saved role
     private void redirectToMain() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String role = prefs.getString(KEY_USER_ROLE, "farmer"); // default to farmer
+
+        Intent intent;
+        if (role.equals("vet")) {
+            intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+        } else {
+            intent = new Intent(LoginActivity.this, MainActivity.class);
+        }
+
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish(); // Close LoginActivity so they can't go back with the back button
+        finish();
     }
 }
